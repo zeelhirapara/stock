@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> new entry </title>
+    <link rel="shortcut icon" href="aa.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="abox.css" />
+</head>
+<body>
+    <div class="box">
+    <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
+    </div>
+    
+    <div class="one-line">
+      <div class="input-group parcel">
+        <label for="parcel-number"><h2>1. parcel number</h2></label>
+        <input type="number" id="parcel-number" placeholder="Enter start number">
+      </div>
+    
+      
+      <div class="input-group weight">
+        <label for="weight"><h2>2. weight</h2></label>
+        <input type="number" id="weight" placeholder="Enter weight">
+      </div>
+
+
+
+      <div class="input-group date">
+        <label for="date"><h2>3. date</h2></label>
+        <input type="date" id="date">
+      </div>
+
+      <div class="input-group size">
+        <label for="size"><h2>4. size</h2></label>
+        <select id="size">
+          <option value="" disabled selected>Select size</option>
+          <option value="1.5 x 50 m ">1.5 x 50 m</option>
+          <option value="2 x 50 m">2 x 50 m</option>
+          <option value="2.5 x 50 m">2.5 x 50 m</option>
+          <option value="3 x 50 m">3 x 50 m</option>
+          <option value="3.5 x 50 m">3.5 x 50 m</option>
+          <option value="4 x 50 m">4 x 50 m</option>
+          <option value="4.5 x 50 m">4.5 x 50 m</option>
+          <option value="5 x 50 m">5 x 50 m</option>
+          <option value="5.5 x 50 m">5.5 x 50 m</option>
+          <option value="6 x 50 m">6 x 50 m</option>
+          <option value="16 x 32 ft">16 x 32 ft</option>
+          <option value="16 x 64 ft">16 x 64 ft</option>
+          <option value="16 x 90 ft">16 x 90 ft</option>
+          <option value="16 x 150 ft">16 x 150 ft</option>
+        </select>
+      </div>
+
+        <div class="input-group percentage">
+        <label for="percentage"><h2>5. percentage(%)</h2></label>
+        <select id="percentage">
+          <option value="" disabled selected>Select percentage(%)</option>
+          <option value="50%">50%</option>
+          <option value="75%">75%</option>
+          <option value="90%">90%</option>
+          
+        </select>
+      </div>
+      <div class="input-group color">
+        <label for="color"><h2>6. color</h2></label>
+        <select id="color">
+          <option value="" disabled selected>color</option>
+          <option value="green">green</option>
+          <option value="black-green">black-green</option>
+          <option value="golden">golden</option>
+          
+        </select>
+      </div>
+    </div>
+
+    <div class="sa">
+      <button class="save" onclick="saveData()">SAVE</button>
+    </div>
+
+
+
+
+
+    <div id="sidebar" class="sidebar">
+  <button class="closebtn" onclick="toggleSidebar()">&times;</button>
+  <a href="index.html">Home</a>
+
+  <a href="Bbox.html">Detail</a>
+  <a href="Cbox.html">Download Excel File</a>
+</div>
+<button class="openbtn" onclick="toggleSidebar()">&#9776; Menu</button>
+
+
+
+
+
+
+
+
+
+<script>
+  function saveData() {
+    const parcelInput = document.getElementById('parcel-number');
+    const weight = document.getElementById('weight').value;
+    const date = document.getElementById('date').value;
+    const size = document.getElementById('size').value;
+    const percentage = document.getElementById('percentage').value;
+    const color = document.getElementById('color').value;
+
+    if (!parcelInput.value || !weight || !date || !size || !percentage || !color) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    const data = JSON.parse(localStorage.getItem("parcelData")) || [];
+
+    const newData = {
+      parcel: parcelInput.value,
+      weight,
+      date,
+      size,
+      percentage,
+      color
+    };
+
+    data.push(newData);
+    localStorage.setItem("parcelData", JSON.stringify(data));
+
+    // 🔄 Save last selected dropdowns
+    localStorage.setItem("lastSize", size);
+    localStorage.setItem("lastPercentage", percentage);
+    localStorage.setItem("lastColor", color);
+
+    // 🚀 Auto increment and reset
+    parcelInput.value = parseInt(parcelInput.value) + 1;
+    document.getElementById('date').value = new Date().toISOString().split("T")[0];
+    document.getElementById('weight').value = "";
+  }
+
+  window.onload = () => {
+    const parcelInput = document.getElementById('parcel-number');
+    parcelInput.value = parcelInput.value || 1;
+    document.getElementById('date').value = new Date().toISOString().split("T")[0];
+
+    // ✅ Restore saved values if available
+    const lastSize = localStorage.getItem("lastSize");
+    const lastPercentage = localStorage.getItem("lastPercentage");
+    const lastColor = localStorage.getItem("lastColor");
+
+    if (lastSize) document.getElementById('size').value = lastSize;
+    if (lastPercentage) document.getElementById('percentage').value = lastPercentage;
+    if (lastColor) document.getElementById('color').value = lastColor;
+
+    // 🔁 When dropdowns change, save them
+    document.getElementById('size').addEventListener('change', (e) => {
+      localStorage.setItem("lastSize", e.target.value);
+    });
+    document.getElementById('percentage').addEventListener('change', (e) => {
+      localStorage.setItem("lastPercentage", e.target.value);
+    });
+    document.getElementById('color').addEventListener('change', (e) => {
+      localStorage.setItem("lastColor", e.target.value);
+    });
+  };
+
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
+
