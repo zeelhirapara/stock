@@ -1,54 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>download excel file</title>
-    <link rel="shortcut icon" href="aa.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="Cbox.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download Excel</title>
+  <link rel="shortcut icon" href="aa.jpg" type="image/x-icon" />
+  <link rel="stylesheet" href="Cbox.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
 </head>
 <body>
-    <div class="box">
-        <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
+  <div class="box">
+    <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
+  </div>
+
+  <div class="all-data">
+    <h2>Select Date Range to Download Excel</h2>
+
+    <div>
+      <label>From: <input type="date" id="fromDate" /></label>
+      <label>To: <input type="date" id="toDate" /></label>
     </div>
-    <div class="all-data">
 
-      <h2>Select Date Range to Download Excel</h2>
-  <div style="margin-bottom: 10px;">
-  <label><strong>From:</strong> <input type="date" id="fromDate"></label>
-  <label><strong>To:</strong> <input type="date" id="toDate"></label>
+    <div class="range-buttons">
+      <button onclick="setDateRange('today')">Today</button>
+      <button onclick="setDateRange('last7')">Last 7 Days</button>
+      <button onclick="setDateRange('lastMonth')">Last Month</button>
+      <button onclick="setDateRange('thisYear')">This Year</button>
+      <button onclick="setDateRange('all')">All Time</button>
+    </div>
+
+    <div class="download-buttons">
+      <button onclick="downloadExcel()" class="ab">Download Excel (CSV)</button>
+  <button onclick="downloadGroupedExcel()" class="ab">Download Grouped Excel</button>
+  <button onclick="downloadGroupedExcelWithSummary()" class="ab">Download Grouped Excel with Summary</button>
 </div>
 
-<!-- 🆕 Quick Range Buttons -->
-<div style="margin-bottom: 20px;">
-  <button onclick="setDateRange('today')">Today</button>
-  <button onclick="setDateRange('last7')">Last 7 Days</button>
-  <button onclick="setDateRange('lastMonth')">Last Month</button>
-  <button onclick="setDateRange('thisYear')">This Year</button>
-  <button onclick="setDateRange('all')">All Time</button>
-</div>
- 
- <div class="dwon">
-  <button onclick="downloadExcel()" id="dw">📥 Download Excel 📥</button>
-</div>
-
-
-
- <div id="sidebar" class="sidebar">
-  <button class="closebtn" onclick="toggleSidebar()">&times;</button>
-  <a href="index.html">Home</a>
-  <a href="Abox.html">Add New Entry</a>
-  <a href="Bbox.html">Detail</a>
-
-</div>
-<button class="openbtn" onclick="toggleSidebar()">&#9776; Menu</button>
-
-
-</div>
-
-
-
-
+    </div>
+  </div>
 
   <script>
     function downloadExcel() {
@@ -88,62 +79,118 @@
       URL.revokeObjectURL(url);
     }
 
-    function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
+    function setDateRange(range) {
+      const fromInput = document.getElementById("fromDate");
+      const toInput = document.getElementById("toDate");
+
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      const todayStr = `${yyyy}-${mm}-${dd}`;
+
+      let from, to;
+
+      switch (range) {
+        case "today":
+          from = to = todayStr;
+          break;
+        case "last7":
+          from = new Date(today);
+          from.setDate(today.getDate() - 6);
+          from = from.toISOString().split("T")[0];
+          to = todayStr;
+          break;
+        case "lastMonth":
+          const firstDayLastMonth = new Date(yyyy, today.getMonth() - 1, 1);
+          const lastDayLastMonth = new Date(yyyy, today.getMonth(), 0);
+          from = firstDayLastMonth.toISOString().split("T")[0];
+          to = lastDayLastMonth.toISOString().split("T")[0];
+          break;
+        case "thisYear":
+          from = `${yyyy}-01-01`;
+          to = todayStr;
+          break;
+        case "all":
+          from = "2000-01-01";
+          to = todayStr;
+          break;
+        default:
+          return;
+      }
+
+      fromInput.value = from;
+      toInput.value = to;
+    }
+
+    function downloadGroupedExcelWithSummary() {
+  const data = JSON.parse(localStorage.getItem("parcelData")) || [];
+  if (data.length === 0) {
+    alert("No parcel data found.");
+    return;
   }
 
+  const wb = XLSX.utils.book_new();
+  const summary = [["Percentage", "Total Weight"]];
 
+  function createSheet(percentage) {
+const filtered = data.filter(d => String(d.percentage) === String(percentage));
+    const rows = [
+      ["Parcel", "Weight", "Date", "Size", "Percentage", "Color"],
+      ...filtered.map(d => [d.parcel, d.weight, d.date, d.size, d.percentage, d.color])
+    ];
 
-  function setDateRange(range) {
-  const fromInput = document.getElementById("fromDate");
-  const toInput = document.getElementById("toDate");
+    const totalWeight = filtered.reduce((sum, d) => sum + parseFloat(d.weight || 0), 0);
+    rows.push(["", `Total: ${totalWeight}`, "", "", "", ""]);
 
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const todayStr = `${yyyy}-${mm}-${dd}`;
-
-  let from, to;
-
-  switch (range) {
-    case 'today':
-      from = to = todayStr;
-      break;
-    case 'last7':
-      from = new Date(today);
-      from.setDate(today.getDate() - 6);
-      from = from.toISOString().split("T")[0];
-      to = todayStr;
-      break;
-    case 'lastMonth':
-      const firstDayLastMonth = new Date(yyyy, today.getMonth() - 1, 1);
-      const lastDayLastMonth = new Date(yyyy, today.getMonth(), 0);
-      from = firstDayLastMonth.toISOString().split("T")[0];
-      to = lastDayLastMonth.toISOString().split("T")[0];
-      break;
-    case 'thisYear':
-      from = `${yyyy}-01-01`;
-      to = todayStr;
-      break;
-    case 'all':
-      from = '2000-01-01';
-      to = todayStr;
-      break;
-    default:
-      return;
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, ws, `Percentage ${percentage}`);
+    summary.push([percentage, totalWeight]);
   }
 
-  fromInput.value = from;
-  toInput.value = to;
+  createSheet("50%");
+  createSheet("75%");
+  createSheet("90%");
+
+  const summarySheet = XLSX.utils.aoa_to_sheet(summary);
+  XLSX.utils.book_append_sheet(wb, summarySheet, "Summary");
+
+  XLSX.writeFile(wb, "Grouped_Parcel_Data_With_Summary.xlsx");
 }
 
+function downloadGroupedExcel() {
+  const data = JSON.parse(localStorage.getItem("parcelData")) || [];
 
+  if (data.length === 0) {
+    alert("❌ No parcel data available.");
+    return;
+  }
 
+  const wb = XLSX.utils.book_new();
+
+  function createSheet(percentage) {
+    const filtered = data.filter(d => String(d.percentage) === String(percentage));
+    const rows = [
+      ["Parcel", "Weight", "Date", "Size", "Percentage", "Color"],
+      ...filtered.map(d => [
+        d.parcel || "", 
+        d.weight || "", 
+        d.date || "", 
+        d.size || "", 
+        d.percentage || "", 
+        d.color || ""
+      ])
+    ];
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, ws, `Percentage ${percentage}`);
+  }
+
+  createSheet("50%");
+  createSheet("75%");
+  createSheet("90%");
+
+  XLSX.writeFile(wb, "Grouped_Parcel_Data.xlsx");
+}
   </script>
-
-
-   
 </body>
 </html>
