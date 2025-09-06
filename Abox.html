@@ -1,5 +1,6 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,20 @@
   <link rel="shortcut icon" href="aa.jpg" type="image/x-icon">
   <link rel="stylesheet" href="abox.css">
 </head>
-<body>
 
-  <div class="box">
-    <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
+<body>
+  <header>
+    <div class="box">
+      <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
+    </div>
+  </header>
+  <div class="home-btn-container">
+    <button class="home-btn" onclick="window.location.href='stock.html'">
+      <span class="home-icon">⬅</span>
+      <span class="home-text">Home</span>
+    </button>
   </div>
+
 
   <div class="one-line">
     <div class="input-group parcel">
@@ -130,5 +140,7 @@
       document.getElementById('color').addEventListener('change', e => localStorage.setItem("lastColor", e.target.value));
     };
   </script>
+  <footer>zeel Industries</footer>
 </body>
+
 </html>

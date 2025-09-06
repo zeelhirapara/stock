@@ -12,9 +12,21 @@
 
 </head>
 <body>
+  <header>
   <div class="box">
     <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
   </div>
+</header>
+
+
+  <div class="home-btn-container">
+  <button class="home-btn" onclick="window.location.href='stock.html'">
+    <span class="home-icon">⬅</span>
+    <span class="home-text">Home</span>
+  </button>
+</div>
+
+
 
   <div class="all-data">
     <h2>Select Date Range to Download Excel</h2>
@@ -192,5 +204,6 @@ function downloadGroupedExcel() {
   XLSX.writeFile(wb, "Grouped_Parcel_Data.xlsx");
 }
   </script>
+  <footer>zeel Industries</footer>
 </body>
 </html>

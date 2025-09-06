@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zeel Industries Login</title>
     <link rel="stylesheet" href="login.css">
+    <link type="module" src="login.js" defer>
+    </script>
 </head>
+
 <body>
     <div class="auth-container">
         <div class="auth-hero">
-            <img src="/Users/zeelhirapara/Documents/app dev/new app/aa.jpg" alt="Illustration of a secure login system with a shield icon protecting digital user profiles" />
+            <img src="aa.jpg"
+                alt="Illustration of a secure login system with a shield icon protecting digital user profiles" />
             <h2>Welcome to Zeel Industries</h2>
-            <p>Join thousands of satisfied users benefiting from our secure authentication system. Your security is our priority.</p>
+            <p>Join thousands of satisfied users benefiting from our secure authentication system. Your security is our
+                priority.</p>
         </div>
-        
+
         <div class="auth-form-container">
             <div class="form-header">
                 <h1>Welcome Back!</h1>
                 <p>Please enter your credentials to access your account</p>
             </div>
-            
+
             <div class="tabs">
                 <div class="tab active" onclick="switchTab('login')">Login</div>
                 <div class="tab" onclick="switchTab('signup')">Sign Up</div>
             </div>
-            
+
             <div id="login" class="tab-content active">
                 <button class="btn btn-google">
                     <img src="google.png" alt="Google logo" />
                     Continue with Google
                 </button>
-                
+
                 <div class="divider">or continue with email</div>
-                
+
                 <form id="loginForm">
                     <div class="form-group">
                         <label for="loginEmail">Email Address</label>
                         <input type="email" id="loginEmail" placeholder="Enter your email" required>
                         <div class="error-message" id="loginEmailError">Please enter a valid email address</div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="loginPassword">Password</label>
                         <div class="password-wrapper input-wrapper">
@@ -48,7 +54,7 @@
                         </div>
                         <div class="error-message" id="loginPasswordError">Password must be at least 8 characters</div>
                     </div>
-                    
+
                     <div class="remember-forgot">
                         <div class="remember-me">
                             <input type="checkbox" id="rememberMe">
@@ -58,36 +64,36 @@
                             <a href="#">Forgot password?</a>
                         </div>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary">Sign In</button>
-                    
+
                     <div class="form-footer">
                         <p>Don't have an account? <a href="#" onclick="switchTab('signup')">Sign up</a></p>
                     </div>
                 </form>
             </div>
-            
+
             <div id="signup" class="tab-content">
                 <button class="btn btn-google">
                     <img src="google.png" alt="Google logo" />
                     Continue with Google
                 </button>
-                
+
                 <div class="divider">or sign up with email</div>
-                
+
                 <form id="signupForm">
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
                         <input type="text" id="fullName" placeholder="Enter your full name" required>
                         <div class="error-message" id="nameError">Please enter your full name</div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="signupEmail">Email Address</label>
                         <input type="email" id="signupEmail" placeholder="Enter your email" required>
                         <div class="error-message" id="emailError">Please enter a valid email address</div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="signupPassword">Password</label>
                         <div class="password-wrapper input-wrapper">
@@ -105,7 +111,7 @@
                         </div>
                         <div class="error-message" id="passwordError">Password doesn't meet requirements</div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="confirmPassword">Confirm Password</label>
                         <div class="password-wrapper input-wrapper">
@@ -114,9 +120,9 @@
                         </div>
                         <div class="error-message" id="confirmPasswordError">Passwords don't match</div>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary">Create Account</button>
-                    
+
                     <div class="form-footer">
                         <p>Already have an account? <a href="#" onclick="switchTab('login')">Sign in</a></p>
                     </div>
@@ -125,171 +131,186 @@
         </div>
     </div>
 
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script src="firebase-config.js"></script>
+
+    <!-- Authentication Script -->
+    <script src="auth.js"></script>
+
     <script>
-        
-    // Switch between login and signup tabs
-    function switchTab(tabName) {
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
-        
-        tabs.forEach(tab => tab.classList.remove('active'));
-        tabContents.forEach(content => content.classList.remove('active'));
-        
-        document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
-        document.getElementById(tabName).classList.add('active');
-    }
-    
-    // Toggle password visibility
-    function togglePassword(inputId, element) {
-        const input = document.getElementById(inputId);
-        if (input.type === 'password') {
-            input.type = 'text';
-            element.innerHTML = '👁️‍🗨️';
-        } else {
-            input.type = 'password';
-            element.innerHTML = '👁️';
+        // Switch between login and signup tabs
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
         }
-    }
-    
-    // Password strength checker
-    document.getElementById('signupPassword').addEventListener('input', function(e) {
-        const password = e.target.value;
-        const strengthMeter = document.getElementById('passwordStrength');
-        const lengthHint = document.getElementById('lengthHint');
-        const uppercaseHint = document.getElementById('uppercaseHint');
-        const numberHint = document.getElementById('numberHint');
-        const specialHint = document.getElementById('specialHint');
-        
-        let strength = 0;
-        
-        // Check length
-        if (password.length >= 8) {
-            strength += 25;
-            lengthHint.classList.add('valid');
-        } else {
-            lengthHint.classList.remove('valid');
+
+        // Toggle password visibility
+        function togglePassword(inputId, element) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                element.innerHTML = '👁️‍🗨️';
+            } else {
+                input.type = 'password';
+                element.innerHTML = '👁️';
+            }
         }
-        
-        // Check uppercase
-        if (/[A-Z]/.test(password)) {
-            strength += 25;
-            uppercaseHint.classList.add('valid');
-        } else {
-            uppercaseHint.classList.remove('valid');
-        }
-        
-        // Check numbers
-        if (/[0-9]/.test(password)) {
-            strength += 25;
-            numberHint.classList.add('valid');
-        } else {
-            numberHint.classList.remove('valid');
-        }
-        
-        // Check special chars
-        if (/[^A-Za-z0-9]/.test(password)) {
-            strength += 25;
-            specialHint.classList.add('valid');
-        } else {
-            specialHint.classList.remove('valid');
-        }
-        
-        // Update strength meter
-        strengthMeter.style.width = strength + '%';
-        
-        // Update color based on strength
-        if (strength < 50) {
-            strengthMeter.style.backgroundColor = '#ef4444'; // red
-        } else if (strength < 75) {
-            strengthMeter.style.backgroundColor = '#f59e0b'; // amber
-        } else {
-            strengthMeter.style.backgroundColor = '#10b981'; // emerald
-        }
-    });
-    
-    // Form validation for signup
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        let isValid = true;
-        
-        // Validate name
-        const name = document.getElementById('fullName').value;
-        if (name.trim() === '') {
-            document.getElementById('nameError').style.display = 'block';
-            isValid = false;
-        } else {
-            document.getElementById('nameError').style.display = 'none';
-        }
-        
-        // Validate email
-        const email = document.getElementById('signupEmail').value;
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            document.getElementById('emailError').style.display = 'block';
-            isValid = false;
-        } else {
-            document.getElementById('emailError').style.display = 'none';
-        }
-        
-        // Validate password
-        const password = document.getElementById('signupPassword').value;
-        const passwordError = document.getElementById('passwordError');
-        
-        if (password.length < 8 || 
-            !/[A-Z]/.test(password) || 
-            !/[0-9]/.test(password) || 
-            !/[^A-Za-z0-9]/.test(password)) {
-            passwordError.style.display = 'block';
-            isValid = false;
-        } else {
-            passwordError.style.display = 'none';
-        }
-        
-        // Validate password confirmation
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        if (password !== confirmPassword) {
-            document.getElementById('confirmPasswordError').style.display = 'block';
-            isValid = false;
-        } else {
-            document.getElementById('confirmPasswordError').style.display = 'none';
-        }
-        
-        if (isValid) {
-            // alert('Account created successfully! Redirecting to dashboard...');
-            window.location.href = 'stock.html';
-            // Here you would typically send data to server
-        }
-    });
-    
-    // Form validation for login
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        let isValid = true;
-        
-        // Validate email
-        const email = document.getElementById('loginEmail').value;
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            document.getElementById('loginEmailError').style.display = 'block';
-            isValid = false;
-        } else {
-            document.getElementById('loginEmailError').style.display = 'none';
-        }
-        
-        // Validate password
-        const password = document.getElementById('loginPassword').value;
-        if (password.length < 8) {
-            document.getElementById('loginPasswordError').style.display = 'block';
-            isValid = false;
-        } else {
-            document.getElementById('loginPasswordError').style.display = 'none';
-        }
-        
-        if (isValid) {
-            // alert('Login successful! Redirecting to dashboard...');
-            window.location.href = 'stock.html'; // Redirect to stck.html
-        }
-    });
+
+        // Password strength checker
+        document.getElementById('signupPassword').addEventListener('input', function (e) {
+            const password = e.target.value;
+            const strengthMeter = document.getElementById('passwordStrength');
+            const lengthHint = document.getElementById('lengthHint');
+            const uppercaseHint = document.getElementById('uppercaseHint');
+            const numberHint = document.getElementById('numberHint');
+            const specialHint = document.getElementById('specialHint');
+
+            let strength = 0;
+
+            // Check length
+            if (password.length >= 8) {
+                strength += 25;
+                lengthHint.classList.add('valid');
+            } else {
+                lengthHint.classList.remove('valid');
+            }
+
+            // Check uppercase
+            if (/[A-Z]/.test(password)) {
+                strength += 25;
+                uppercaseHint.classList.add('valid');
+            } else {
+                uppercaseHint.classList.remove('valid');
+            }
+
+            // Check numbers
+            if (/[0-9]/.test(password)) {
+                strength += 25;
+                numberHint.classList.add('valid');
+            } else {
+                numberHint.classList.remove('valid');
+            }
+
+            // Check special chars
+            if (/[^A-Za-z0-9]/.test(password)) {
+                strength += 25;
+                specialHint.classList.add('valid');
+            } else {
+                specialHint.classList.remove('valid');
+            }
+
+            // Update strength meter
+            strengthMeter.style.width = strength + '%';
+
+            // Update color based on strength
+            if (strength < 50) {
+                strengthMeter.style.backgroundColor = '#ef4444'; // red
+            } else if (strength < 75) {
+                strengthMeter.style.backgroundColor = '#f59e0b'; // amber
+            } else {
+                strengthMeter.style.backgroundColor = '#10b981'; // emerald
+            }
+        });
+
+        // Form validation for signup
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Validate name
+            const name = document.getElementById('fullName').value;
+            if (name.trim() === '') {
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('nameError').style.display = 'none';
+            }
+
+            // Validate email
+            const email = document.getElementById('signupEmail').value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+
+            // Validate password
+            const password = document.getElementById('signupPassword').value;
+            const passwordError = document.getElementById('passwordError');
+
+            if (password.length < 8 ||
+                !/[A-Z]/.test(password) ||
+                !/[0-9]/.test(password) ||
+                !/[^A-Za-z0-9]/.test(password)) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            // Validate password confirmation
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('confirmPasswordError').style.display = 'none';
+            }
+
+            if (isValid) {
+                // alert('Account created successfully! Redirecting to dashboard...');
+                window.location.href = 'stock.html';
+                // Here you would typically send data to server
+            }
+        });
+
+        // Form validation for login
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Validate email
+            const email = document.getElementById('loginEmail').value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('loginEmailError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('loginEmailError').style.display = 'none';
+            }
+
+            // Validate password
+            const password = document.getElementById('loginPassword').value;
+            if (password.length < 8) {
+                document.getElementById('loginPasswordError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('loginPasswordError').style.display = 'none';
+            }
+
+            if (isValid) {
+                // alert('Login successful! Redirecting to dashboard...');
+                window.location.href = 'stock.html'; // Redirect to stck.html
+            }
+        });
 
 
     </script>
+    <script src="login.js"></script>
+
+    <footer>zeel Industries</footer>
 </body>
+
 </html>

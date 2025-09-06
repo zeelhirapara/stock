@@ -1,9 +1,5 @@
 body {
-      background-image: url(4020918.jpg);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-attachment: fixed;
-      background-size: flex;
+      background-color: darkgray;
       font-family: system-ui, sans-serif;
       margin: 0;
       padding: 0;
@@ -120,3 +116,64 @@ body {
       border: 1px solid #000000;
       transition-duration: 0.3s;
     }
+
+
+
+.home-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.home-btn {
+  margin-left: 16px;
+  font-size: 18px;
+  padding: 0;
+  border: 1px solid #000000;
+  border-radius: 12px;
+  background: none;
+  color: #000000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  width: 3cm;
+  height: 1cm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.home-btn:hover {
+  background: none;
+  transform: scale(1.05);
+}
+
+.home-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.home-text {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* ...existing code... */
+body {
+  padding-top: 60px;
+}
+
+  footer {
+   text-align: center;
+   padding: 10px;
+   font-size: 14px;
+   color: rgba(0, 0, 0, 0.375);
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   background: rgba(0, 0, 0, 0);
+}
