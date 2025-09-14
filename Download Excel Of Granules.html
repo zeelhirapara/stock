@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+       
         :root {
             --primary-color: #3b82f6;
             --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb);
@@ -44,11 +45,12 @@
             .range-buttons, .download-buttons { flex-direction: row; justify-content: center; flex-wrap: wrap; }
         }
     </style>
+    
 </head>
 <body>
-    <header><div class="zeel"><img src="aa.jpg" alt="photo" /></div></header>
+    <header></header>
     <div class="home-btn-container">
-        <a href="stock.html" class="home-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg><span>Home</span></a>
+        <a href="stock.html" class="home-btn"><span></span><span>Home</span></a>
     </div>
 
     <div class="container">
@@ -62,18 +64,131 @@
             <button class="btn btn-secondary" onclick="setDateRange('last7')">Last 7 Days</button>
             <button class="btn btn-secondary" onclick="setDateRange('all')">All Time</button>
         </div>
-        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 30px 0;">
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
         <div class="download-buttons">
-            <button onclick="downloadAllDataExcel()" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg><span>All Data</span></button>
-            <button onclick="downloadGroupedByColorExcel()" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg><span>Grouped by Color</span></button>
+            <button onclick="downloadAllDataExcel()" class="btn btn-primary"><span>📥</span><span>All Data</span></button>
+            <button onclick="downloadGroupedByColorExcel()" class="btn btn-primary"><span>📥</span><span>Grouped by Color</span></button>
         </div>
     </div>
     
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <script>
-        // Your existing JavaScript for this page goes here
-        window.onload=()=>{setDateRange("all")};function getFilteredData(){const e=document.getElementById("fromDate").value,t=document.getElementById("toDate").value;if(!e||!t)return alert("Please select a valid date range."),null;const a=new Date(e),n=new Date(t);n.setHours(23,59,59,999);const o=JSON.parse(localStorage.getItem("granuleData"))||[];if(0===o.length)return alert("No granule data found in localStorage."),null;const r=o.filter(e=>{const t=new Date(e.date);return t>=a&&t<=n});return 0===r.length?(alert("No data found in the selected date range."),null):r}function downloadAllDataExcel(){const e=getFilteredData();if(e){const t=["Siral Number","Date","Bags","Color","Weight","Total Weight","Price","Total Price","Status"],a=e.map(e=>{const t=(parseFloat(e.bags)*parseFloat(e.weight)).toFixed(2),a=(parseFloat(e.bags)*parseFloat(e.price)).toFixed(2);return[e.siral,e.date,e.bags,e.color,e.weight,t,e.price,a,e.departure?"Departed":"In Stock"]}),n=XLSX.utils.aoa_to_sheet([t,...a]),o=XLSX.utils.book_new();XLSX.utils.book_append_sheet(o,n,"All Granule Data"),XLSX.writeFile(o,"All_Granule_Data.xlsx")}}function downloadGroupedByColorExcel(){const e=getFilteredData();if(e){const t=XLSX.utils.book_new(),a=["Color","Total Bags","Total Weight","Total Price"],n=[];[...new Set(e.map(e=>e.color))].forEach(o=>{const r=e.filter(e=>e.color===o),d=["Siral Number","Date","Bags","Color","Weight","Total Weight","Price","Total Price"],l=r.map(e=>{const t=(parseFloat(e.bags)*parseFloat(e.weight)).toFixed(2),a=(parseFloat(e.bags)*parseFloat(e.price)).toFixed(2);return[e.siral,e.date,e.bags,e.color,e.weight,t,e.price,a]}),s=r.reduce((e,t)=>e+parseFloat(t.bags||0),0),c=r.reduce((e,t)=>e+parseFloat(t.bags)*parseFloat(t.weight),0),i=r.reduce((e,t)=>e+parseFloat(t.bags)*parseFloat(t.price),0);l.push([]),l.push(["","TOTALS:",s.toFixed(2),"","",c.toFixed(2),"",i.toFixed(2)]),n.push([o,s.toFixed(2),c.toFixed(2),i.toFixed(2)]);const u=XLSX.utils.aoa_to_sheet([d,...l]);XLSX.utils.book_append_sheet(t,u,`Color - ${o}`)});const o=XLSX.utils.aoa_to_sheet([a,...n]);XLSX.utils.book_append_sheet(t,o,"Summary by Color"),XLSX.writeFile(t,"Grouped_by_Color_Summary.xlsx")}}function setDateRange(e){const t=document.getElementById("fromDate"),a=document.getElementById("toDate"),n=new Date,o=n.getFullYear();let r,d;switch(e){case"today":r=d=n;break;case"last7":r=new Date(n),r.setDate(n.getDate()-6),d=n;break;case"lastMonth":r=new Date(o,n.getMonth()-1,1),d=new Date(o,n.getMonth(),0);break;case"thisYear":r=new Date(o,0,1),d=n;break;case"all":r=new Date("2000-01-01"),d=n}t.value=r.toISOString().split("T")[0],a.value=d.toISOString().split("T")[0]}
+        window.onload = () => { setDateRange('all'); };
+
+        // This new function gets data from Firestore instead of localStorage
+        async function getFilteredData() {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                alert("Please log in to download data.");
+                window.location.href = 'login.html';
+                return null;
+            }
+
+            const fromDateStr = document.getElementById("fromDate").value;
+            const toDateStr = document.getElementById("toDate").value;
+            if (!fromDateStr || !toDateStr) {
+                alert("Please select a valid date range.");
+                return null;
+            }
+
+            // 1. Fetch all granules for the user from Firestore
+            const querySnapshot = await db.collection('users').doc(user.uid).collection('granules').get();
+            const allUserGranules = querySnapshot.docs.map(doc => doc.data());
+            
+            if (allUserGranules.length === 0) {
+                alert("No data found in your account.");
+                return null;
+            }
+
+            // 2. Now, filter the results by the selected date range
+            const fromDate = new Date(fromDateStr);
+            const toDate = new Date(toDateStr);
+            toDate.setHours(23, 59, 59, 999);
+            
+            const filtered = allUserGranules.filter(entry => {
+                const entryDate = new Date(entry.date);
+                return entryDate >= fromDate && entryDate <= toDate;
+            });
+
+            if (filtered.length === 0) {
+                alert("No data found in the selected date range.");
+                return null;
+            }
+            return filtered;
+        }
+
+        async function downloadAllDataExcel() {
+            const filteredData = await getFilteredData();
+            if (!filteredData) return;
+
+            const headers = ["Siral Number", "Date", "Bags", "Color", "Weight", "Total Weight", "Price", "Total Price", "Status"];
+            const dataForSheet = filteredData.map(d => {
+                const totalWeight = (parseFloat(d.bags) * parseFloat(d.weight)).toFixed(2);
+                const totalPrice = (parseFloat(d.bags) * parseFloat(d.price)).toFixed(2);
+                return [d.siral, d.date, d.bags, d.color, d.weight, totalWeight, d.price, totalPrice, d.departure ? "Departed" : "In Stock"];
+            });
+            
+            const worksheet = XLSX.utils.aoa_to_sheet([headers, ...dataForSheet]);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "All Granule Data");
+            XLSX.writeFile(workbook, "All_Granule_Data.xlsx");
+        }
+
+        async function downloadGroupedByColorExcel() {
+            const filteredData = await getFilteredData();
+            if (!filteredData) return;
+
+            // This part of your code for creating the Excel file doesn't need to change
+            const workbook = XLSX.utils.book_new();
+            const summaryHeaders = ["Color", "Total Bags", "Total Weight", "Total Price"];
+            const summaryData = [];
+            const uniqueColors = [...new Set(filteredData.map(item => item.color))];
+
+            uniqueColors.forEach(color => {
+                const dataForColor = filteredData.filter(d => d.color === color);
+                const headers = ["Siral Number", "Date", "Bags", "Color", "Weight", "Total Weight", "Price", "Total Price"];
+                const sheetData = dataForColor.map(d => {
+                    const totalWeight = (parseFloat(d.bags) * parseFloat(d.weight)).toFixed(2);
+                    const totalPrice = (parseFloat(d.bags) * parseFloat(d.price)).toFixed(2);
+                    return [d.siral, d.date, d.bags, d.color, d.weight, totalWeight, d.price, totalPrice];
+                });
+
+                const totalBags = dataForColor.reduce((sum, d) => sum + parseFloat(d.bags || 0), 0);
+                const grandTotalWeight = dataForColor.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.weight)), 0);
+                const grandTotalPrice = dataForColor.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.price)), 0);
+
+                sheetData.push([]);
+                sheetData.push(["", "TOTALS:", totalBags.toFixed(2), "", "", grandTotalWeight.toFixed(2), "", grandTotalPrice.toFixed(2)]);
+                summaryData.push([color, totalBags.toFixed(2), grandTotalWeight.toFixed(2), grandTotalPrice.toFixed(2)]);
+
+                const worksheet = XLSX.utils.aoa_to_sheet([headers, ...sheetData]);
+                XLSX.utils.book_append_sheet(workbook, worksheet, `Color - ${color}`);
+            });
+
+            const summaryWorksheet = XLSX.utils.aoa_to_sheet([summaryHeaders, ...summaryData]);
+            XLSX.utils.book_append_sheet(workbook, summaryWorksheet, "Summary by Color");
+            XLSX.writeFile(workbook, "Grouped_by_Color_Summary.xlsx");
+        }
+
+        function setDateRange(range) {
+            // Your setDateRange function does not need to change
+            const fromInput = document.getElementById("fromDate");
+            const toInput = document.getElementById("toDate");
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            let from, to;
+            switch (range) {
+                case "today": from = to = today; break;
+                case "last7": from = new Date(today); from.setDate(today.getDate() - 6); to = today; break;
+                case "all": from = new Date('2000-01-01'); to = today; break;
+            }
+            fromInput.value = from.toISOString().split("T")[0];
+            toInput.value = to.toISOString().split("T")[0];
+        }
     </script>
-    
-    <footer>zeel Industries</footer>
 </body>
 </html>

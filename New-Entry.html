@@ -18,30 +18,121 @@
             --text-color: #1e293b;
             --card-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
         }
-        body { font-family: 'Nunito', sans-serif; background-color: var(--light-gray); color: var(--text-color); margin: 0; padding: 20px; font-size: 17px; }
-        header { display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
-        header .zeel img { max-height: 60px; border-radius: 8px; }
-        .container { max-width: 900px; margin: 20px auto; padding: 30px 40px; background-color: #fff; border-radius: 16px; box-shadow: var(--card-shadow); }
-        .home-btn-container { position: absolute; top: 20px; left: 20px; }
-        .btn, .home-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; text-decoration: none; color: #fff; }
-        .home-btn { background: #64748b; }
-        .home-btn:hover { background: #475569; transform: translateY(-2px); }
-        .btn-primary { background: var(--primary-gradient); }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
-        .btn svg { width: 24px; height: 24px; }
-        h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; font-weight: 700; color: var(--primary-color); }
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
-        .input-group { display: flex; flex-direction: column; }
-        .input-group label { margin-bottom: 10px; font-weight: 600; }
-        .input-group input, .input-group select { padding: 14px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 1.05rem; font-family: 'Nunito', sans-serif; transition: all 0.2s ease; }
-        .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
-        .save-button-container { text-align: center; margin-top: 40px; }
-        footer { text-align: center; margin-top: 40px; color: #9ca3af; }
-        @media (min-width: 768px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            font-size: 17px;
+        }
+        header { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin-bottom: 30px; 
+        }
+        header .zeel img { 
+            max-height: 60px; 
+            border-radius: 8px; 
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px 40px;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+        .home-btn-container { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+        }
+        .btn, .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #fff;
+        }
+        .home-btn { 
+            background: #64748b; 
+        }
+        .home-btn:hover { 
+            background: #475569; 
+            transform: translateY(-2px); 
+        }
+        .btn-primary { 
+            background: var(--primary-gradient); 
+        }
+        .btn-primary:hover { 
+            background: var(--primary-hover); 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); 
+        }
+        .btn svg { 
+            width: 24px; 
+            height: 24px; 
+        }
+        h2 { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            font-size: 2rem; 
+            font-weight: 700; 
+            color: var(--primary-color); 
+        }
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 25px; 
+        }
+        .input-group { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .input-group label { 
+            margin-bottom: 10px; 
+            font-weight: 600; 
+        }
+        .input-group input, .input-group select { 
+            padding: 14px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 10px; 
+            font-size: 1.05rem; 
+            font-family: 'Nunito', sans-serif; 
+            transition: all 0.2s ease; 
+        }
+        .input-group input:focus, .input-group select:focus { 
+            outline: none; 
+            border-color: var(--primary-color); 
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); 
+        }
+        .save-button-container { 
+            text-align: center; 
+            margin-top: 40px; 
+        }
+        footer { 
+            text-align: center; 
+            margin-top: 40px; 
+            color: #9ca3af; 
+        }
+        @media (min-width: 768px) { 
+            .form-grid { grid-template-columns: 1fr 1fr; } 
+        }
     </style>
 </head>
 <body>
-    <header><div class="zeel"><img src="aa.jpg" alt="photo" /></div></header>
+    <header>
+        <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
+    </header>
     <div class="home-btn-container">
         <a href="stock.html" class="home-btn">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
@@ -52,8 +143,8 @@
     <div class="container">
         <h2>New Parcel Entry</h2>
         <div class="form-grid">
-            <div class="input-group"><label for="Bell">Bell Number</label><input type="number" id="Bell"></div>
-            <div class="input-group"><label for="parcel-number">Parcel Number</label><input type="number" id="parcel-number"></div>
+            <div class="input-group"><label for="Bell">Bell Number</label><input type="number" id="Bell" placeholder="Loading..."></div>
+            <div class="input-group"><label for="parcel-number">Parcel Number</label><input type="number" id="parcel-number" placeholder="Loading..."></div>
             <div class="input-group"><label for="weight">Weight</label><input type="number" id="weight" placeholder="Enter weight"></div>
             <div class="input-group"><label for="date">Date</label><input type="date" id="date"></div>
             <div class="input-group"><label for="size">Size</label><select id="size"><option value="" disabled selected>Select size</option><option value="1.5 x 50 m">1.5 x 50 m</option><option value="2 x 50 m">2 x 50 m</option><option value="2.5 x 50 m">2.5 x 50 m</option><option value="3 x 50 m">3 x 50 m</option><option value="6 x 50 m">6 x 50 m</option></select></div>
@@ -67,12 +158,121 @@
             </button>
         </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
     
     <script>
-        // Your existing JavaScript for this page
-        function saveData(){const e=document.getElementById("parcel-number"),t=document.getElementById("weight").value,a=document.getElementById("date").value,n=document.getElementById("size").value,r=document.getElementById("percentage").value,l=document.getElementById("color").value,o=document.getElementById("Bell");if(!e.value||!t||!a||!n||!r||!l)return void alert("Please fill all fields.");let c=JSON.parse(localStorage.getItem("parcelData"))||[];let d=parseInt(o.value)||1;c.push({parcel:e.value,weight:t,date:a,size:n,percentage:r,color:l,bell:d}),localStorage.setItem("parcelData",JSON.stringify(c)),localStorage.setItem("lastSize",n),localStorage.setItem("lastPercentage",r),localStorage.setItem("lastColor",l),localStorage.setItem("lastParcelNumber",e.value),localStorage.setItem("lastBell",d),c.filter(e=>e.bell===d).length>=10&&(d++,localStorage.setItem("lastBell",d),o.value=d),e.value=parseInt(e.value)+1,document.getElementById("date").value=(new Date).toISOString().split("T")[0],document.getElementById("weight").value=""}window.onload=()=>{const e=document.getElementById("parcel-number"),t=document.getElementById("Bell"),a=localStorage.getItem("lastParcelNumber");e.value=a?parseInt(a)+1:1;const n=localStorage.getItem("lastBell")||1;t.value=n,document.getElementById("date").value=(new Date).toISOString().split("T")[0];const r=localStorage.getItem("lastSize"),l=localStorage.getItem("lastPercentage"),o=localStorage.getItem("lastColor");r&&(document.getElementById("size").value=r),l&&(document.getElementById("percentage").value=l),o&&(document.getElementById("color").value=o),t.addEventListener("change",e=>{const t=parseInt(e.target.value)||1;localStorage.setItem("lastBell",t)}),document.getElementById("size").addEventListener("change",e=>localStorage.setItem("lastSize",e.target.value)),document.getElementById("percentage").addEventListener("change",e=>localStorage.setItem("lastPercentage",e.target.value)),document.getElementById("color").addEventListener("change",e=>localStorage.setItem("lastColor",e.target.value))};
+        // --- This function runs automatically when the page loads ---
+        window.onload = () => {
+            // Get references to all the form inputs
+            const parcelInput = document.getElementById('parcel-number');
+            const bellInput = document.getElementById('Bell');
+            const dateInput = document.getElementById('date');
+            const sizeInput = document.getElementById('size');
+            const percentageInput = document.getElementById('percentage');
+            const colorInput = document.getElementById('color');
+
+            // 1. Set the date to today
+            dateInput.value = new Date().toISOString().split("T")[0];
+
+            // 2. Restore the last used dropdown values from localStorage
+            const lastSize = localStorage.getItem('lastParcelSize');
+            const lastPercentage = localStorage.getItem('lastParcelPercentage');
+            const lastColor = localStorage.getItem('lastParcelColor');
+            if (lastSize) sizeInput.value = lastSize;
+            if (lastPercentage) percentageInput.value = lastPercentage;
+            if (lastColor) colorInput.value = lastColor;
+
+            // 3. Automatically set Bell and Parcel numbers
+            firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                    const parcelsRef = db.collection('users').doc(user.uid).collection('parcels');
+                    
+                    // Get all parcels, ordered by creation time, to find the latest one
+                    parcelsRef.orderBy("createdAt", "desc").limit(1).get()
+                        .then(querySnapshot => {
+                            if (querySnapshot.empty) {
+                                // This is the very first entry for this user
+                                bellInput.value = 1;
+                                parcelInput.value = 1;
+                            } else {
+                                // Get the data from the most recent parcel
+                                const latestParcel = querySnapshot.docs[0].data();
+                                const lastBell = parseInt(latestParcel.bell);
+                                const lastParcel = parseInt(latestParcel.parcel);
+
+                                // Now, check how many parcels are in the last bell
+                                parcelsRef.where("bell", "==", latestParcel.bell).get()
+                                    .then(bellSnapshot => {
+                                        const bellCount = bellSnapshot.size;
+
+                                        if (bellCount >= 10) {
+                                            // Bell is full, start a new one
+                                            bellInput.value = lastBell + 1;
+                                            parcelInput.value = 1; // Reset parcel number to 1
+                                        } else {
+                                            // Bell is not full, continue with it
+                                            bellInput.value = lastBell;
+                                            parcelInput.value = lastParcel + 1;
+                                        }
+                                    });
+                            }
+                        });
+                } else {
+                    window.location.href = 'login.html';
+                }
+            });
+        };
+
+        // --- Updated saveData function ---
+        function saveData() {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                alert("You must be logged in to save data.");
+                return window.location.href = 'login.html';
+            }
+
+            const parcelInput = document.getElementById('parcel-number');
+            const weight = document.getElementById('weight').value;
+            const date = document.getElementById('date').value;
+            const size = document.getElementById('size').value;
+            const percentage = document.getElementById('percentage').value;
+            const color = document.getElementById('color').value;
+            const bellInput = document.getElementById('Bell');
+
+            if (!parcelInput.value || !weight || !date || !size || !percentage || !color || !bellInput.value) { 
+                return alert("Please fill all fields.");
+            }
+
+            // Save the latest dropdown choices for next time
+            localStorage.setItem('lastParcelSize', size);
+            localStorage.setItem('lastParcelPercentage', percentage);
+            localStorage.setItem('lastParcelColor', color);
+
+            db.collection('users').doc(user.uid).collection('parcels').add({
+                bell: bellInput.value,
+                parcel: parcelInput.value,
+                weight: weight,
+                date: date,
+                size: size,
+                percentage: percentage,
+                color: color,
+                departure: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                //alert('Parcel saved successfully!');
+                // Reload the page to auto-fill the next numbers
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error("Error saving parcel: ", error);
+            });
+        }
     </script>
-    
     <footer>zeel Industries</footer>
 </body>
 </html>

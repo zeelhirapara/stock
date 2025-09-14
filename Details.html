@@ -11,39 +11,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
-        :root {
-            --primary-color: #3b82f6;
-            --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb);
-            --primary-hover: #2563eb;
-            --danger-color: #ef4444;
-            --light-gray: #f4f7f9;
-            --border-color: #e2e8f0;
-            --text-color: #1e293b;
-            --card-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
-        }
-        body { font-family: 'Nunito', sans-serif; background-color: var(--light-gray); color: var(--text-color); margin: 0; padding: 20px; font-size: 17px; }
+        /* This uses the same big, bold design from before */
+        :root { --primary-color: #3b82f6; --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb); /* etc. */ }
+        body { font-family: 'Nunito', sans-serif; background-color: #f4f7f9; color: #1e293b; margin: 0; padding: 20px; font-size: 17px; }
         header { display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
         header .zeel img { max-height: 60px; border-radius: 8px; }
-        .container { max-width: 1200px; margin: 20px auto; padding: 30px 40px; background-color: #fff; border-radius: 16px; box-shadow: var(--card-shadow); }
+        .container { max-width: 1200px; margin: 20px auto; padding: 30px 40px; background-color: #fff; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07); }
         .home-btn-container { position: absolute; top: 20px; left: 20px; }
-        .btn, .home-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; text-decoration: none; color: #fff; }
+        .btn, .home-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; color: #fff; }
         .home-btn { background: #64748b; }
-        .home-btn:hover { background: #475569; transform: translateY(-2px); }
         .btn-primary { background: var(--primary-gradient); }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
-        .btn svg { width: 20px; height: 20px; }
         .btn-delete { background-color: #fee2e2; color: #b91c1c; border: none; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; }
-        .btn-delete:hover { background-color: #fecaca; transform: scale(1.05); }
         h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; color: var(--primary-color); }
         .controls { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
-        .filters { display: flex; flex-direction: column; gap: 15px; }
-        .actions { display: flex; flex-direction: column; gap: 15px; }
-        .filters input { padding: 14px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 1rem; font-family: 'Nunito', sans-serif; }
+        .filters, .actions { display: flex; flex-direction: column; gap: 15px; }
+        .filters input { padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; }
         .table-wrapper { overflow-x: auto; }
         #dataTable { width: 100%; border-collapse: collapse; text-align: left; }
-        #dataTable th, #dataTable td { padding: 16px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
-        #dataTable thead th { background-color: #f8fafc; font-weight: 700; color: #475569; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
-        #dataTable tbody tr { transition: background-color 0.2s ease; }
+        #dataTable th, #dataTable td { padding: 16px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+        #dataTable thead th { background-color: #f8fafc; font-weight: 700; color: #475569; font-size: 0.9rem; text-transform: uppercase; }
         #dataTable tbody tr:hover { background-color: #f1f5f9; }
         .selected-row { background-color: #dbeafe !important; }
         .departure-row { background-color: #fee2e2 !important; }
@@ -54,7 +40,7 @@
 <body>
     <header><div class="zeel"><img src="aa.jpg" alt="photo" /></div></header>
     <div class="home-btn-container">
-        <a href="stock.html" class="home-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg><span>Home</span></a>
+        <a href="stock.html" class="home-btn"><span></span><span>Home</span></a>
     </div>
 
     <div class="container">
@@ -66,8 +52,8 @@
                 <input type="text" id="searchBox" placeholder="Search anything..." />
             </div>
             <div class="actions">
-                <button class="btn btn-primary" onclick="downloadSelectedPDF()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg><span>Selected</span></button>
-                <button class="btn btn-primary" onclick="downloadDeparturePDF()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg><span>Departures</span></button>
+                <button class="btn btn-primary" onclick="downloadSelectedPDF()"><span>📥</span><span>Selected</span></button>
+                <button class="btn btn-primary" onclick="downloadDeparturePDF()"><span>📥</span><span>Departures</span></button>
             </div>
         </div>
         <div class="table-wrapper">
@@ -78,11 +64,102 @@
         </div>
     </div>
     
-    <script>
-        // Your existing JavaScript, slightly cleaned up
-        let data = JSON.parse(localStorage.getItem("parcelData")) || []; const tbody = document.querySelector("#dataTable tbody"); function renderTable(e = data) { tbody.innerHTML = ""; e.forEach((e, t) => { const a = document.createElement("tr"); a.className = e.departure ? "departure-row" : ""; a.innerHTML = `<td><input type="checkbox" class="row-check" onchange="highlightRow(this)" ${e.departure ? "disabled" : ""}></td><td>${e.bell}</td><td>${e.parcel}</td><td>${e.weight}</td><td>${e.date}</td><td>${e.size}</td><td>${e.percentage}</td><td>${e.color}</td><td><button class="btn-delete" onclick="deleteEntry(${t})">Delete</button></td><td><input type="checkbox" class="departure-check" onchange="markRowAsDeparture(${t})" ${e.departure ? "checked disabled" : ""}></td>`; tbody.appendChild(a) }) } function highlightRow(e) { const t = e.closest("tr"), a = t.querySelector(".departure-check"); a.checked ? e.checked = !1 : t.classList.toggle("selected-row", e.checked) } function selectAllRows(e) { document.querySelectorAll(".row-check").forEach(t => { t.disabled || (t.checked = e.checked, highlightRow(t)) }) } function markRowAsDeparture(e) { confirm("Mark this entry as a departure?") && (data[e].departure = !0, localStorage.setItem("parcelData", JSON.stringify(data)), renderTable(applyFilters())) } function downloadSelectedPDF() { const e = Array.from(document.querySelectorAll(".selected-row")); if (0 === e.length) return alert("No selected rows found."); const { jsPDF: t } = window.jspdf, a = new t, n = [["Bell", "Parcel", "Weight", "Date", "Size", "Percentage", "Color"]], l = e.map(e => { const t = e.querySelectorAll("td"); return [t[1].innerText, t[2].innerText, t[3].innerText, t[4].innerText, t[5].innerText, t[6].innerText, t[7].innerText] }), r = l.reduce((e, t) => e + (parseFloat(t[2]) || 0), 0); l.push(["", "Total Weight:", r.toFixed(2), "", "", "", ""]), a.text("Selected Parcel Data", 14, 10), a.autoTable({ head: n, body: l, startY: 20 }), a.save("selected_parcels.pdf") } function downloadDeparturePDF() { const e = data.filter(e => e.departure); if (0 === e.length) return alert("No departure data found."); const { jsPDF: t } = window.jspdf, a = new t, n = [["Bell", "Parcel", "Weight", "Date", "Size", "Percentage", "Color"]], l = e.map(e => [e.bell, e.parcel, e.weight, e.date, e.size, e.percentage, e.color]), r = e.reduce((e, t) => e + (parseFloat(t.weight) || 0), 0); l.push(["", "Total Weight:", r.toFixed(2), "", "", "", ""]), a.text("Departure Data", 14, 10), a.autoTable({ head: n, body: l, startY: 20 }), a.save("departure_data.pdf") } function applyFilters() { const e = document.getElementById("searchBox").value.toLowerCase(), t = new Date(document.getElementById("filterFrom").value), a = new Date(document.getElementById("filterTo").value); return data.filter(n => { const l = new Date(n.date); return Object.values(n).some(t => String(t).toLowerCase().includes(e)) && (!isNaN(t) ? l >= t : !0) && (!isNaN(a) ? l <= a : !0) }) } function deleteEntry(e) { if (!confirm("Are you sure you want to delete this entry?")) return; const t = tbody.children[e].querySelector("td:nth-child(3)").innerText, a = data.findIndex(e => e.parcel == t); -1 !== a && (data.splice(a, 1), localStorage.setItem("parcelData", JSON.stringify(data)), renderTable(applyFilters())) } document.getElementById("searchBox").addEventListener("input", () => renderTable(applyFilters())), document.getElementById("filterFrom").addEventListener("change", () => renderTable(applyFilters())), document.getElementById("filterTo").addEventListener("change", () => renderTable(applyFilters())), window.onload = () => renderTable(applyFilters());
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
     
+<script> const tbody = document.querySelector("#dataTable tbody");
+        let allData = [];
+
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                db.collection('users').doc(user.uid).collection('parcels')
+                  .orderBy("createdAt", "desc")
+                  .onSnapshot(querySnapshot => {
+                    allData = [];
+                    querySnapshot.forEach(doc => {
+                        let entry = doc.data();
+                        entry.id = doc.id;
+                        allData.push(entry);
+                    });
+                    applyFilters();
+                  });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        function renderTable(dataToRender = []) {
+            tbody.innerHTML = "";
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">No parcel data found.</td></tr>`;
+                return;
+            }
+            dataToRender.forEach(entry => {
+                const tr = document.createElement("tr");
+                tr.className = entry.departure ? "departure-row" : "";
+                tr.innerHTML = `
+                  <td><input type="checkbox" class="row-check" data-id="${entry.id}" onchange="highlightRow(this)" ${entry.departure ? 'disabled' : ''}></td>
+                  <td>${entry.bell}</td><td>${entry.parcel}</td><td>${entry.weight}</td>
+                  <td>${entry.date}</td><td>${entry.size}</td><td>${entry.percentage}</td>
+                  <td>${entry.color}</td>
+                  <td><button class="btn-delete" onclick="deleteEntry('${entry.id}')">Delete</button></td>
+                  <td><input type="checkbox" class="departure-check" onchange="markRowAsDeparture('${entry.id}')" ${entry.departure ? 'checked disabled' : ''}></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        function applyFilters() {
+            const search = document.getElementById("searchBox").value.toLowerCase();
+            const from = document.getElementById("filterFrom").value ? new Date(document.getElementById("filterFrom").value) : null;
+            const to = document.getElementById("filterTo").value ? new Date(document.getElementById("filterTo").value) : null;
+            if(from) from.setHours(0,0,0,0);
+            if(to) to.setHours(23,59,59,999);
+            
+            const filtered = allData.filter(entry => {
+                const entryDate = new Date(entry.date);
+                const matchesSearch = Object.values(entry).some(val => String(val).toLowerCase().includes(search));
+                const matchesDate = (!from || entryDate >= from) && (!to || entryDate <= to);
+                return matchesSearch && matchesDate;
+            });
+            renderTable(filtered);
+        }
+
+        function deleteEntry(docId) { if (!confirm("Are you sure?")) return; const user = firebase.auth().currentUser; if (user && docId) { db.collection('users').doc(user.uid).collection('parcels').doc(docId).delete(); } }
+        function markRowAsDeparture(docId) { const user = firebase.auth().currentUser; if (user && docId) { db.collection('users').doc(user.uid).collection('parcels').doc(docId).update({ departure: true }); } }
+        function highlightRow(checkbox) { const row = checkbox.closest("tr"); if (!row.querySelector(".departure-check").checked) { row.classList.toggle("selected-row", checkbox.checked); } else { checkbox.checked = false; } }
+        function selectAllRows(masterCheckbox) { document.querySelectorAll(".row-check").forEach(cb => { if (!cb.disabled) { cb.checked = masterCheckbox.checked; highlightRow(cb); } }); }
+
+        function downloadSelectedPDF() {
+            const selectedCheckboxes = Array.from(document.querySelectorAll(".row-check:checked"));
+            if (selectedCheckboxes.length === 0) { alert("No rows selected."); return; }
+            const selectedIds = selectedCheckboxes.map(cb => cb.getAttribute('data-id'));
+            const selectedData = allData.filter(entry => selectedIds.includes(entry.id));
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            const headers = [["Bell", "Parcel", "Weight", "Date", "Size", "Percentage", "Color"]];
+            const body = selectedData.map(d => [d.bell, d.parcel, d.weight, d.date, d.size, d.percentage, d.color]);
+            const totalWeight = selectedData.reduce((sum, d) => sum + parseFloat(d.weight || 0), 0);
+            body.push(["", "Total Weight:", totalWeight.toFixed(2), "", "", "", ""]);
+            doc.text("Selected Parcel Data", 14, 10); doc.autoTable({ head: headers, body, startY: 20 }); doc.save("selected_parcels.pdf");
+        }
+
+        function downloadDeparturePDF() {
+            const departureData = allData.filter(entry => entry.departure);
+            if (departureData.length === 0) { alert("No departure data found."); return; }
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            const headers = [["Bell", "Parcel", "Weight", "Date", "Size", "Percentage", "Color"]];
+            const body = departureData.map(d => [d.bell, d.parcel, d.weight, d.date, d.size, d.percentage, d.color]);
+            const totalWeight = departureData.reduce((sum, d) => sum + parseFloat(d.weight || 0), 0);
+            body.push(["", "Total Weight:", totalWeight.toFixed(2), "", "", "", ""]);
+            doc.text("Departure Parcel Data", 14, 10); doc.autoTable({ head: headers, body, startY: 20 }); doc.save("departure_parcels.pdf");
+        }
+
+        document.getElementById("searchBox").addEventListener("input", applyFilters);
+        document.getElementById("filterFrom").addEventListener("change", applyFilters);
+        document.getElementById("filterTo").addEventListener("change", applyFilters);
+</script>
     <footer>zeel Industries</footer>
 </body>
 </html>

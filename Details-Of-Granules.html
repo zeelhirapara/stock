@@ -1,274 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saved Granules Entries</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-  <style>
-    :root {
-      --primary-color: #3b82f6;
-      --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb);
-      --primary-hover: #2563eb;
-      --danger-color: #ef4444;
-      --light-gray: #f4f7f9;
-      --border-color: #e2e8f0;
-      --text-color: #1e293b;
-      --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-
-    body {
-      font-family: 'Nunito', sans-serif;
-      background-color: var(--light-gray);
-      color: var(--text-color);
-      margin: 0;
-      padding: 20px;
-      font-size: 17px;
-    }
-
-    header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    header .zeel img {
-      max-height: 60px;
-      border-radius: 8px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 30px 40px;
-      background-color: #fff;
-      border-radius: 16px;
-      box-shadow: var(--card-shadow);
-    }
-
-    .home-btn-container {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-    }
-
-    .btn,
-    .home-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 12px 24px;
-      border-radius: 10px;
-      border: none;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      color: #fff;
-    }
-
-    .home-btn {
-      background: #64748b;
-    }
-
-    .home-btn:hover {
-      background: #475569;
-      transform: translateY(-2px);
-    }
-
-    .btn-primary {
-      background: var(--primary-gradient);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-    }
-
-    .btn svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .btn-delete {
-      background-color: #fee2e2;
-      color: #b91c1c;
-      border: none;
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      border-radius: 8px;
-    }
-
-    .btn-delete:hover {
-      background-color: #fecaca;
-      transform: scale(1.05);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2rem;
-      color: var(--primary-color);
-    }
-
-    .controls {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .filters {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .actions {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .filters input {
-      padding: 14px;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 1rem;
-      font-family: 'Nunito', sans-serif;
-    }
-
-    .table-wrapper {
-      overflow-x: auto;
-    }
-
-    #dataTable {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    #dataTable th,
-    #dataTable td {
-      padding: 16px;
-      border-bottom: 1px solid var(--border-color);
-      vertical-align: middle;
-    }
-
-    #dataTable thead th {
-      background-color: #f8fafc;
-      font-weight: 700;
-      color: #475569;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    #dataTable tbody tr {
-      transition: background-color 0.2s ease;
-    }
-
-    #dataTable tbody tr:hover {
-      background-color: #f1f5f9;
-    }
-
-    .selected-row {
-      background-color: #dbeafe !important;
-    }
-
-    .departure-row {
-      background-color: #fee2e2 !important;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      color: #9ca3af;
-    }
-
-    @media (min-width: 1024px) {
-      .controls {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .filters,
-      .actions {
-        flex-direction: row;
-        gap: 15px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Granules Entries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* This uses the same big, bold design from before */
+        :root { --primary-color: #3b82f6; --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb); /* etc. */ }
+        body { font-family: 'Nunito', sans-serif; background-color: #f4f7f9; color: #1e293b; margin: 0; padding: 20px; font-size: 17px; }
+        header { display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
+        header .zeel img { max-height: 60px; border-radius: 8px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 30px 40px; background-color: #fff; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07); }
+        .home-btn-container { position: absolute; top: 20px; left: 20px; }
+        .btn, .home-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; color: #fff; }
+        .home-btn { background: #64748b; }
+        .btn-primary { background: var(--primary-gradient); }
+        .btn-delete { background-color: #fee2e2; color: #b91c1c; border: none; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; }
+        h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; color: var(--primary-color); }
+        .controls { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
+        .filters { display: flex; flex-direction: column; gap: 15px; }
+        .actions { display: flex; flex-direction: column; gap: 15px; }
+        .filters input { padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; font-family: 'Nunito', sans-serif; }
+        .table-wrapper { overflow-x: auto; }
+        #dataTable { width: 100%; border-collapse: collapse; text-align: left; }
+        #dataTable th, #dataTable td { padding: 16px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+        #dataTable thead th { background-color: #f8fafc; font-weight: 700; color: #475569; font-size: 0.9rem; text-transform: uppercase; }
+        #dataTable tbody tr:hover { background-color: #f1f5f9; }
+        .selected-row { background-color: #dbeafe !important; }
+        .departure-row { background-color: #fee2e2 !important; }
+        footer { text-align: center; margin-top: 40px; color: #9ca3af; }
+        @media (min-width: 1024px) { .controls { flex-direction: row; justify-content: space-between; align-items: center; } .filters, .actions { flex-direction: row; gap: 15px; } }
+    </style>
 </head>
-
 <body>
-  <header>
-    <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
-  </header>
-  <div class="home-btn-container">
-    <a href="stock.html" class="home-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke-width="2" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-      </svg><span>Home</span></a>
-  </div>
-
-  <div class="container">
-    <h2>Granules Stock Details</h2>
-    <div class="controls">
-      <div class="filters">
-        <input type="date" id="filterFrom" title="Filter from date" />
-        <input type="date" id="filterTo" title="Filter to date" />
-        <input type="text" id="searchBox" placeholder="Search anything..." />
-      </div>
-      <div class="actions">
-        <button class="btn btn-primary" onclick="downloadSelectedPDF()"><svg xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg><span>Selected</span></button>
-        <button class="btn btn-primary" onclick="downloadDeparturePDF()"><svg xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg><span>Departures</span></button>
-      </div>
+    <header><div class="zeel"><img src="aa.jpg" alt="photo" /></div></header>
+    <div class="home-btn-container">
+        <a href="stock.html" class="home-btn"><span></span><span>Home</span></a>
     </div>
-    <div class="table-wrapper">
-      <table id="dataTable">
-        <thead>
-          <tr>
-            <th><input type="checkbox" id="selectAll" onclick="selectAllRows(this)"></th>
-            <th>Siral No.</th>
-            <th>Date</th>
-            <th>Bags</th>
-            <th>Color</th>
-            <th>Weight</th>
-            <th>Total Wt.</th>
-            <th>Price (Total)</th>
-            <th>Actions</th>
-            <th>To Parcel</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+
+    <div class="container">
+        <h2>Granules Stock Details</h2>
+        <div class="controls">
+            <div class="filters">
+                <input type="date" id="filterFrom" title="Filter from date" />
+                <input type="date" id="filterTo" title="Filter to date" />
+                <input type="text" id="searchBox" placeholder="Search anything..." />
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="downloadSelectedPDF()"><span>📥</span><span>Selected</span></button>
+                <button class="btn btn-primary" onclick="downloadDeparturePDF()"><span>📥</span><span>Departures</span></button>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table id="dataTable">
+                <thead><tr><th><input type="checkbox" id="selectAll" onclick="selectAllRows(this)"></th><th>Siral No.</th><th>Date</th><th>Bags</th><th>Color</th><th>Weight</th><th>Total Wt.</th><th>Price (Total)</th><th>Actions</th><th>To Parcel</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
-  </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        const tbody = document.querySelector("#dataTable tbody");
+        let allData = [];
 
-  <script>
-    // Your existing JavaScript for this page goes here
-    let data = JSON.parse(localStorage.getItem("granuleData")) || []; const tbody = document.querySelector("#dataTable tbody"); function renderTable(e = data) { tbody.innerHTML = "", e.forEach((e, t) => { const a = document.createElement("tr"); a.className = e.departure ? "departure-row" : ""; const r = (parseFloat(e.bags) * parseFloat(e.weight)).toFixed(2), d = (parseFloat(e.bags) * parseFloat(e.price)).toFixed(2); a.innerHTML = `<td><input type="checkbox" class="row-check" onchange="highlightRow(this)" ${e.departure ? "disabled" : ""}></td><td>${e.siral}</td><td>${e.date}</td><td>${e.bags}</td><td>${e.color}</td><td>${e.weight}</td><td>${r}</td><td>${e.price} ( ${d})</td><td><button class="btn-delete" onclick="deleteEntry(${t})">Delete</button></td><td><input type="checkbox" class="departure-check" onchange="markRowAsDeparture(${t})" ${e.departure ? "checked disabled" : ""}></td>`, tbody.appendChild(a) }) } function highlightRow(e) { const t = e.closest("tr"); t.querySelector(".departure-check").checked ? e.checked = !1 : t.classList.toggle("selected-row", e.checked) } function selectAllRows(e) { document.querySelectorAll(".row-check").forEach(t => { t.disabled || (t.checked = e.checked, highlightRow(t)) }) } function markRowAsDeparture(e) { confirm("Mark this entry for parcel?");data[e].departure = !0, localStorage.setItem("granuleData", JSON.stringify(data)); const t = tbody.children[e]; t && (t.classList.remove("selected-row"), t.classList.add("departure-row"), t.querySelector(".row-check") && (t.querySelector(".row-check").checked = !1, t.querySelector(".row-check").disabled = !0), t.querySelector(".departure-check") && (t.querySelector(".departure-check").checked = !0, t.querySelector(".departure-check").disabled = !0)) } function downloadSelectedPDF() { const e = Array.from(document.querySelectorAll(".selected-row")); if (0 === e.length) return void alert("No rows selected."); const { jsPDF: t } = window.jspdf, a = new t; const r = [["Siral", "Date", "Bags", "Color", "Weight", "Total Wt.", "Price (Total)"]], d = e.map(e => parseInt(e.querySelector('td:nth-child(2)').innerText)), l = data.filter(e => d.includes(e.siral)), s = l.map(e => { const t = (parseFloat(e.bags) * parseFloat(e.weight)).toFixed(2), a = (parseFloat(e.bags) * parseFloat(e.price)).toFixed(2); return [e.siral, e.date, e.bags, e.color, e.weight, t, `${e.price} ( ${a})`] }), c = l.reduce((e, t) => e + parseFloat(t.bags) * parseFloat(t.weight), 0), o = l.reduce((e, t) => e + parseFloat(t.bags) * parseFloat(t.price), 0); s.push(["", "", "", "", "Total:", c.toFixed(2), `Total:  ${o.toFixed(2)}`]), a.text("Selected Granules Data", 14, 10), a.autoTable({ head: r, body: s, startY: 20 }), a.save("selected_granules.pdf") } function downloadDeparturePDF() { const e = data.filter(e => e.departure); if (0 === e.length) return void alert("No departure data found."); const { jsPDF: t } = window.jspdf, a = new t; const r = [["Siral", "Date", "Bags", "Color", "Weight", "Total Wt.", "Price (Total)"]], d = e.map(e => { const t = (parseFloat(e.bags) * parseFloat(e.weight)).toFixed(2), a = (parseFloat(e.bags) * parseFloat(e.price)).toFixed(2); return [e.siral, e.date, e.bags, e.color, e.weight, t, `${e.price} ( ${a})`] }), l = e.reduce((e, t) => e + parseFloat(t.bags) * parseFloat(t.weight), 0), s = e.reduce((e, t) => e + parseFloat(t.bags) * parseFloat(t.price), 0); d.push(["", "", "", "", "Total:", l.toFixed(2), `Total: ₹ ${s.toFixed(2)}`]), a.text("Departure Granules Data", 14, 10), a.autoTable({ head: r, body: d, startY: 20 }), a.save("departure_data.pdf") } function applyFilters() { const e = document.getElementById("searchBox").value.toLowerCase(), t = document.getElementById("filterFrom").value ? new Date(document.getElementById("filterFrom").value) : null, a = document.getElementById("filterTo").value ? new Date(document.getElementById("filterTo").value) : null; t && t.setHours(0, 0, 0, 0), a && a.setHours(23, 59, 59, 999); const r = data.filter(r => { const d = (parseFloat(r.bags) * parseFloat(r.weight)).toFixed(2), l = (parseFloat(r.bags) * parseFloat(r.price)).toFixed(2), s = new Date(r.date); return (Object.values(r).some(t => String(t).toLowerCase().includes(e)) || d.includes(e) || l.includes(e)) && (!t || s >= t) && (!a || s <= a) }); renderTable(r) } function deleteEntry(e) { const t = tbody.children[e].children[1].innerText, a = data.findIndex(e => e.siral == t); -1 === a || !confirm("Are you sure?") || (data.splice(a, 1), localStorage.setItem("granuleData", JSON.stringify(data)), applyFilters()) } document.getElementById("searchBox").addEventListener("input", applyFilters), document.getElementById("filterFrom").addEventListener("change", applyFilters), document.getElementById("filterTo").addEventListener("change", applyFilters), window.onload = () => renderTable();
-  </script>
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                db.collection('users').doc(user.uid).collection('granules')
+                  .orderBy("createdAt", "desc")
+                  .onSnapshot(querySnapshot => {
+                    allData = [];
+                    querySnapshot.forEach(doc => {
+                        let entry = doc.data();
+                        entry.id = doc.id;
+                        allData.push(entry);
+                    });
+                    applyFilters(); // Render table with current filter settings
+                }, error => {
+                    console.error("Error fetching data: ", error);
+                    tbody.innerHTML = `<tr><td colspan="10">Error loading data. Please check console.</td></tr>`;
+                });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
 
-  <footer>zeel Industries</footer>
+        function renderTable(dataToRender = []) {
+            tbody.innerHTML = "";
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">No data found.</td></tr>`;
+                return;
+            }
+            dataToRender.forEach(entry => {
+                const tr = document.createElement("tr");
+                tr.className = entry.departure ? "departure-row" : "";
+                const totalWeight = (parseFloat(entry.bags) * parseFloat(entry.weight)).toFixed(2);
+                const totalPrice = (parseFloat(entry.bags) * parseFloat(entry.price)).toFixed(2);
+                tr.innerHTML = `
+                  <td><input type="checkbox" class="row-check" data-id="${entry.id}" onchange="highlightRow(this)" ${entry.departure ? 'disabled' : ''}></td>
+                  <td>${entry.siral}</td><td>${entry.date}</td><td>${entry.bags}</td>
+                  <td>${entry.color}</td><td>${entry.weight}</td><td>${totalWeight}</td>
+                  <td>${entry.price} ( ${totalPrice})</td>
+                  <td><button class="btn-delete" onclick="deleteEntry('${entry.id}')">Delete</button></td>
+                  <td><input type="checkbox" class="departure-check" onchange="markRowAsDeparture('${entry.id}')" ${entry.departure ? 'checked disabled' : ''}></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        // ✅ THIS FUNCTION IS NOW INCLUDED
+        function highlightRow(checkbox) {
+            const row = checkbox.closest("tr");
+            if (!row.querySelector(".departure-check").checked) {
+                row.classList.toggle("selected-row", checkbox.checked);
+            } else {
+                checkbox.checked = false;
+            }
+        }
+
+        // ✅ THIS FUNCTION IS NOW INCLUDED
+        function selectAllRows(masterCheckbox) {
+            document.querySelectorAll(".row-check").forEach(cb => {
+                if (!cb.disabled) {
+                    cb.checked = masterCheckbox.checked;
+                    highlightRow(cb);
+                }
+            });
+        }
+        
+        function deleteEntry(docId) {
+            if (!confirm("Are you sure?")) return;
+            const user = firebase.auth().currentUser;
+            if (user && docId) {
+                db.collection('users').doc(user.uid).collection('granules').doc(docId).delete();
+            }
+        }
+        
+        function markRowAsDeparture(docId) {
+            const user = firebase.auth().currentUser;
+            if (user && docId) {
+                db.collection('users').doc(user.uid).collection('granules').doc(docId).update({ departure: true });
+            }
+        }
+        
+        // ✅ THIS FUNCTION IS NOW INCLUDED
+        function applyFilters() {
+            const search = document.getElementById("searchBox").value.toLowerCase();
+            const fromDateValue = document.getElementById("filterFrom").value;
+            const toDateValue = document.getElementById("filterTo").value;
+            
+            const from = fromDateValue ? new Date(fromDateValue) : null;
+            const to = toDateValue ? new Date(toDateValue) : null;
+            if(from) from.setHours(0,0,0,0);
+            if(to) to.setHours(23,59,59,999);
+            
+            const filtered = allData.filter(entry => {
+                const totalWeight = (parseFloat(entry.bags) * parseFloat(entry.weight)).toFixed(2);
+                const totalPrice = (parseFloat(entry.bags) * parseFloat(entry.price)).toFixed(2);
+                const entryDate = new Date(entry.date);
+                
+                const matchesSearch = Object.values(entry).some(val => String(val).toLowerCase().includes(search)) 
+                                      || totalWeight.includes(search) 
+                                      || totalPrice.includes(search);
+                
+                const matchesDate = (!from || entryDate >= from) && (!to || entryDate <= to);
+                
+                return matchesSearch && matchesDate;
+            });
+
+            renderTable(filtered);
+        }
+
+        // ✅ THESE FUNCTIONS ARE NOW INCLUDED
+        function downloadSelectedPDF() {
+            const selectedCheckboxes = Array.from(document.querySelectorAll(".row-check:checked"));
+            if (selectedCheckboxes.length === 0) {
+                alert("No rows selected to download.");
+                return;
+            }
+
+            const selectedIds = selectedCheckboxes.map(cb => cb.getAttribute('data-id'));
+            const selectedData = allData.filter(entry => selectedIds.includes(entry.id));
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const headers = [["Siral", "Date", "Bags", "Color", "Weight", "Total Wt.", "Price (Total)"]];
+            const body = selectedData.map(d => {
+                const totalWeight = (parseFloat(d.bags) * parseFloat(d.weight)).toFixed(2);
+                const totalPrice = (parseFloat(d.bags) * parseFloat(d.price)).toFixed(2);
+                return [d.siral, d.date, d.bags, d.color, d.weight, totalWeight, `${d.price} ( ${totalPrice})`];
+            });
+            
+            const grandTotalWeight = selectedData.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.weight)), 0);
+            const grandTotalPrice = selectedData.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.price)), 0);
+            
+            body.push(["", "", "", "", "Total:", grandTotalWeight.toFixed(2), `Total:  ${grandTotalPrice.toFixed(2)}`]);
+            
+            doc.text("Selected Granules Data", 14, 10);
+            doc.autoTable({ head: headers, body, startY: 20 });
+            doc.save("selected_granules.pdf");
+        }
+
+        function downloadDeparturePDF() {
+            const departureData = allData.filter(entry => entry.departure);
+            if (departureData.length === 0) {
+                alert("No departure data found.");
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const headers = [["Siral", "Date", "Bags", "Color", "Weight", "Total Wt.", "Price (Total)"]];
+            const body = departureData.map(d => {
+                const totalWeight = (parseFloat(d.bags) * parseFloat(d.weight)).toFixed(2);
+                const totalPrice = (parseFloat(d.bags) * parseFloat(d.price)).toFixed(2);
+                return [d.siral, d.date, d.bags, d.color, d.weight, totalWeight, `${d.price} ( ${totalPrice})`];
+            });
+
+            const grandTotalWeight = departureData.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.weight)), 0);
+            const grandTotalPrice = departureData.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.price)), 0);
+            
+            body.push(["", "", "", "", "Total:", grandTotalWeight.toFixed(2), `Total:  ${grandTotalPrice.toFixed(2)}`]);
+            
+            doc.text("Departure Granules Data", 14, 10);
+            doc.autoTable({ head: headers, body, startY: 20 });
+            doc.save("departure_data.pdf");
+        }
+
+        document.getElementById("searchBox").addEventListener("input", applyFilters);
+        document.getElementById("filterFrom").addEventListener("change", applyFilters);
+        document.getElementById("filterTo").addEventListener("change", applyFilters);
+    </script>
+    
+    <footer>zeel Industries</footer>
 </body>
-
 </html>

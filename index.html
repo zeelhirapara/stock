@@ -225,86 +225,86 @@
         });
 
         // Form validation for signup
-        document.getElementById('signupForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let isValid = true;
+        // document.getElementById('signupForm').addEventListener('submit', function (e) {
+        //     e.preventDefault();
+        //     let isValid = true;
 
-            // Validate name
-            const name = document.getElementById('fullName').value;
-            if (name.trim() === '') {
-                document.getElementById('nameError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('nameError').style.display = 'none';
-            }
+        //     // Validate name
+        //     const name = document.getElementById('fullName').value;
+        //     if (name.trim() === '') {
+        //         document.getElementById('nameError').style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         document.getElementById('nameError').style.display = 'none';
+        //     }
 
-            // Validate email
-            const email = document.getElementById('signupEmail').value;
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                document.getElementById('emailError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('emailError').style.display = 'none';
-            }
+        //     // Validate email
+        //     const email = document.getElementById('signupEmail').value;
+        //     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        //         document.getElementById('emailError').style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         document.getElementById('emailError').style.display = 'none';
+        //     }
 
-            // Validate password
-            const password = document.getElementById('signupPassword').value;
-            const passwordError = document.getElementById('passwordError');
+        //     // Validate password
+        //     const password = document.getElementById('signupPassword').value;
+        //     const passwordError = document.getElementById('passwordError');
 
-            if (password.length < 8 ||
-                !/[A-Z]/.test(password) ||
-                !/[0-9]/.test(password) ||
-                !/[^A-Za-z0-9]/.test(password)) {
-                passwordError.style.display = 'block';
-                isValid = false;
-            } else {
-                passwordError.style.display = 'none';
-            }
+        //     if (password.length < 8 ||
+        //         !/[A-Z]/.test(password) ||
+        //         !/[0-9]/.test(password) ||
+        //         !/[^A-Za-z0-9]/.test(password)) {
+        //         passwordError.style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         passwordError.style.display = 'none';
+        //     }
 
-            // Validate password confirmation
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            if (password !== confirmPassword) {
-                document.getElementById('confirmPasswordError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('confirmPasswordError').style.display = 'none';
-            }
+        //     // Validate password confirmation
+        //     const confirmPassword = document.getElementById('confirmPassword').value;
+        //     if (password !== confirmPassword) {
+        //         document.getElementById('confirmPasswordError').style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         document.getElementById('confirmPasswordError').style.display = 'none';
+        //     }
 
-            if (isValid) {
-                // alert('Account created successfully! Redirecting to dashboard...');
-                window.location.href = 'stock.html';
-                // Here you would typically send data to server
-            }
-        });
+        //     if (isValid) {
+        //         // alert('Account created successfully! Redirecting to dashboard...');
+        //         window.location.href = 'stock.html';
+        //         // Here you would typically send data to server
+        //     }
+        // });
 
         // Form validation for login
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            let isValid = true;
+        // document.getElementById('loginForm').addEventListener('submit', function (e) {
+        //     e.preventDefault();
+        //     let isValid = true;
 
-            // Validate email
-            const email = document.getElementById('loginEmail').value;
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                document.getElementById('loginEmailError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('loginEmailError').style.display = 'none';
-            }
+        //     // Validate email
+        //     const email = document.getElementById('loginEmail').value;
+        //     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        //         document.getElementById('loginEmailError').style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         document.getElementById('loginEmailError').style.display = 'none';
+        //     }
 
-            // Validate password
-            const password = document.getElementById('loginPassword').value;
-            if (password.length < 8) {
-                document.getElementById('loginPasswordError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('loginPasswordError').style.display = 'none';
-            }
+        //     // Validate password
+        //     const password = document.getElementById('loginPassword').value;
+        //     if (password.length < 8) {
+        //         document.getElementById('loginPasswordError').style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         document.getElementById('loginPasswordError').style.display = 'none';
+        //     }
 
-            if (isValid) {
-                // alert('Login successful! Redirecting to dashboard...');
-                window.location.href = 'stock.html'; // Redirect to stck.html
-            }
-        });
+        //     if (isValid) {
+        //         // alert('Login successful! Redirecting to dashboard...');
+        //         window.location.href = 'stock.html'; // Redirect to stck.html
+        //     }
+        // });
 
 
     </script>

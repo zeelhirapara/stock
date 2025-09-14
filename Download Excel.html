@@ -28,12 +28,8 @@
         .home-btn-container { position: absolute; top: 20px; left: 20px; }
         .btn, .home-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; text-decoration: none; color: #fff; }
         .home-btn { background: var(--secondary-color); }
-        .home-btn:hover { background: var(--secondary-hover); transform: translateY(-2px); }
         .btn-primary { background: var(--primary-gradient); }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
         .btn-secondary { background: var(--secondary-color); }
-        .btn-secondary:hover { background: var(--secondary-hover); transform: translateY(-2px); }
-        .btn svg { width: 22px; height: 22px; }
         h2 { margin-top: 0; margin-bottom: 30px; font-size: 2rem; color: var(--primary-color); }
         .date-selectors { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
         .date-selectors input[type="date"] { padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 1rem; font-family: 'Nunito', sans-serif; }
@@ -45,7 +41,7 @@
 <body>
     <header><div class="zeel"><img src="aa.jpg" alt="photo" /></div></header>
     <div class="home-btn-container">
-        <a href="stock.html" class="home-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg><span>Home</span></a>
+        <a href="stock.html" class="home-btn"><span></span><span>Home</span></a>
     </div>
 
     <div class="container">
@@ -61,16 +57,111 @@
         </div>
         <hr style="border: none; border-top: 1px solid var(--border-color); margin: 30px 0;">
         <div class="download-buttons">
-            <button onclick="downloadAllDataExcel()" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg><span>All Data</span></button>
-            <button onclick="downloadGroupedByPercentageExcel()" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg><span>Grouped by %</span></button>
+            <button onclick="downloadAllDataExcel()" class="btn btn-primary"><span>📥</span><span>All Data</span></button>
+            <button onclick="downloadGroupedByPercentageExcel()" class="btn btn-primary"><span>📥</span><span>Grouped by %</span></button>
         </div>
     </div>
     
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
-        // Your existing JavaScript, improved for consistency and filtering
-        window.onload=()=>{setDateRange("all")};function getFilteredData(){const e=document.getElementById("fromDate").value,t=document.getElementById("toDate").value;if(!e||!t)return alert("Please select a valid date range."),null;const a=new Date(e),n=new Date(t);n.setHours(23,59,59,999);const l=JSON.parse(localStorage.getItem("parcelData"))||[];if(0===l.length)return alert("No parcel data found."),null;const r=l.filter(e=>{const t=new Date(e.date);return t>=a&&t<=n});return 0===r.length?(alert("No data in selected date range."),null):r}function downloadAllDataExcel(){const e=getFilteredData();if(e){const t=["Bell","Parcel","Weight","Date","Size","Percentage","Color","Status"],a=e.map(e=>[e.bell,e.parcel,e.weight,e.date,e.size,e.percentage,e.color,e.departure?"Departed":"In Stock"]),n=XLSX.utils.aoa_to_sheet([t,...a]),l=XLSX.utils.book_new();XLSX.utils.book_append_sheet(l,n,"All Parcel Data"),XLSX.writeFile(l,"All_Parcel_Data.xlsx")}}function downloadGroupedByPercentageExcel(){const e=getFilteredData();if(e){const t=XLSX.utils.book_new(),a=["Percentage","Total Weight"],n=[];const l=[...new Set(e.map(e=>e.percentage))].sort();l.forEach(l=>{const r=e.filter(e=>e.percentage===l),o=["Bell","Parcel","Weight","Date","Size","Percentage","Color"],c=r.map(e=>[e.bell,e.parcel,e.weight,e.date,e.size,e.percentage,e.color]),d=r.reduce((e,t)=>e+parseFloat(t.weight||0),0);c.push([]),c.push(["","Total Weight:",d.toFixed(2)]),n.push([l,d.toFixed(2)]);const s=XLSX.utils.aoa_to_sheet([o,...c]);XLSX.utils.book_append_sheet(t,s,`Percentage ${l}`)});const r=XLSX.utils.aoa_to_sheet([a,...n]);XLSX.utils.book_append_sheet(t,r,"Summary by Percentage"),XLSX.writeFile(t,"Grouped_by_Percentage_Summary.xlsx")}}function setDateRange(e){const t=document.getElementById("fromDate"),a=document.getElementById("toDate"),n=new Date,l=n.getFullYear();let r,o;switch(e){case"today":r=o=n;break;case"last7":r=new Date(n),r.setDate(n.getDate()-6),o=n;break;case"lastMonth":r=new Date(l,n.getMonth()-1,1),o=new Date(l,n.getMonth(),0);break;case"thisYear":r=new Date(l,0,1),o=n;break;case"all":r=new Date("2000-01-01"),o=n}t.value=r.toISOString().split("T")[0],a.value=o.toISOString().split("T")[0]}
+        window.onload = () => { setDateRange('all'); };
+
+        async function getFilteredData() {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                alert("Please log in to download data.");
+                window.location.href = 'login.html';
+                return null;
+            }
+
+            const fromDateStr = document.getElementById("fromDate").value;
+            const toDateStr = document.getElementById("toDate").value;
+            if (!fromDateStr || !toDateStr) {
+                alert("Please select a valid date range.");
+                return null;
+            }
+
+            const querySnapshot = await db.collection('users').doc(user.uid).collection('parcels').get();
+            const allUserParcels = querySnapshot.docs.map(doc => doc.data());
+            
+            if (allUserParcels.length === 0) {
+                alert("No data found in your account.");
+                return null;
+            }
+
+            const fromDate = new Date(fromDateStr);
+            const toDate = new Date(toDateStr);
+            toDate.setHours(23, 59, 59, 999);
+            
+            const filtered = allUserParcels.filter(entry => {
+                const entryDate = new Date(entry.date);
+                return entryDate >= fromDate && entryDate <= toDate;
+            });
+
+            if (filtered.length === 0) {
+                alert("No data found in the selected date range.");
+                return null;
+            }
+            return filtered;
+        }
+
+        async function downloadAllDataExcel() {
+            const filteredData = await getFilteredData();
+            if (!filteredData) return;
+
+            const headers = ["Bell", "Parcel", "Weight", "Date", "Size", "Percentage", "Color", "Status"];
+            const dataForSheet = filteredData.map(d => [d.bell, d.parcel, d.weight, d.date, d.size, d.percentage, d.color, d.departure ? "Departed" : "In Stock"]);
+            
+            const worksheet = XLSX.utils.aoa_to_sheet([headers, ...dataForSheet]);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "All Parcel Data");
+            XLSX.writeFile(workbook, "All_Parcel_Data.xlsx");
+        }
+
+        async function downloadGroupedByPercentageExcel() {
+            const filteredData = await getFilteredData();
+            if (!filteredData) return;
+
+            const workbook = XLSX.utils.book_new();
+            const summaryHeaders = ["Percentage", "Total Weight"];
+            const summaryData = [];
+            const uniquePercentages = [...new Set(filteredData.map(item => item.percentage))].sort();
+
+            uniquePercentages.forEach(percentage => {
+                const dataForPercentage = filteredData.filter(d => d.percentage === percentage);
+                const headers = ["Bell", "Parcel", "Weight", "Date", "Size", "Percentage", "Color"];
+                const sheetData = dataForPercentage.map(d => [d.bell, d.parcel, d.weight, d.date, d.size, d.percentage, d.color]);
+                const totalWeight = dataForPercentage.reduce((sum, d) => sum + parseFloat(d.weight || 0), 0);
+                sheetData.push(["", "Total Weight:", totalWeight.toFixed(2)]);
+                summaryData.push([percentage, totalWeight.toFixed(2)]);
+                const worksheet = XLSX.utils.aoa_to_sheet([headers, ...sheetData]);
+                XLSX.utils.book_append_sheet(workbook, worksheet, `Percentage ${percentage}`);
+            });
+
+            const summaryWorksheet = XLSX.utils.aoa_to_sheet([summaryHeaders, ...summaryData]);
+            XLSX.utils.book_append_sheet(workbook, summaryWorksheet, "Summary by Percentage");
+            XLSX.writeFile(workbook, "Grouped_by_Percentage_Summary.xlsx");
+        }
+
+        function setDateRange(range) {
+            const fromInput = document.getElementById("fromDate");
+            const toInput = document.getElementById("toDate");
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            let from, to;
+            switch (range) {
+                case "today": from = to = today; break;
+                case "last7": from = new Date(today); from.setDate(today.getDate() - 6); to = today; break;
+                case "all": from = new Date('2000-01-01'); to = today; break;
+            }
+            fromInput.value = from.toISOString().split("T")[0];
+            toInput.value = to.toISOString().split("T")[0];
+        }
     </script>
-    
+
     <footer>zeel Industries</footer>
 </body>
 </html>
