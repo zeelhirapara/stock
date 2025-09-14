@@ -1,31 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stock Details</title>
-  <link rel="shortcut icon" href="aa.jpg" type="image/x-icon" />
-  <link rel="stylesheet" href="stock.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Details</title>
+    <link rel="shortcut icon" href="aa.jpg" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb);
+            --primary-hover: #2563eb;
+            --secondary-color: #64748b;
+            --secondary-hover: #475569;
+            --light-gray: #f4f7f9;
+            --border-color: #e2e8f0;
+            --text-color: #1e293b;
+            --card-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            font-size: 17px;
+        }
+        header { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin-bottom: 30px; 
+        }
+        header .zeel img { 
+            max-height: 60px; 
+            border-radius: 8px; 
+        }
+        .main-container {
+            max-width: 900px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: 1fr; /* Always one column */
+            gap: 30px;
+        }
+        .stock-section {
+            padding: 30px 40px;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .stock-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        .stock-section h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2.5rem; /* Bigger heading */
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 16px 24px; /* Bigger buttons */
+            border-radius: 10px;
+            border: none;
+            font-size: 1.2rem; /* Bigger button text */
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #fff;
+        }
+        .btn-primary { 
+            background: var(--primary-gradient); 
+        }
+        .btn-primary:hover { 
+            background: var(--primary-hover); 
+            transform: scale(1.05); 
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+        .btn svg { 
+            width: 24px; 
+            height: 24px; 
+        }
+        .logout-container { 
+            text-align: center; 
+            margin-top: 40px; 
+        }
+        .btn-logout { 
+            background-color: transparent; 
+            color: var(--secondary-color); 
+            border: 2px solid var(--border-color); 
+        }
+        .btn-logout:hover { 
+            background-color: var(--secondary-color); 
+            color: #fff; 
+            border-color: var(--secondary-color); 
+        }
+        footer { 
+            text-align: center; 
+            margin-top: 40px; 
+            color: #9ca3af; 
+        }
 
+        /* --- STYLES FOR TABLET AND UP --- */
+        @media (min-width: 768px) {
+            .stock-section {
+                padding: 50px;
+            }
+            .button-container { 
+                grid-template-columns: 1fr 1fr 1fr; 
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <header>
-    <div class="center">
-      <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
-  </header>
-  <div class="button-container">
-  <button id="a" onclick="window.location.href='Abox.html'">➕ New Entry</button>
-  <button id="a" onclick="window.location.href='Bbox.html'">📋 Details</button>
-  <button id="a" onclick="window.location.href='Cbox.html'">📥 Download Excel</button>
-  </div>
-  </div>
-  <footer>zeel Industries</footer>
-  <div class="logout">
-    <button id="logout" onclick="window.location.href='index.html'">log out </button>
-  </div>
+    <header>
+        <div class="zeel"><img src="aa.jpg" alt="photo" /></div>
+    </header>
+    
+    <div class="main-container">
+        <div class="stock-section">
+            <h2>Granules Stock</h2>
+            <div class="button-container">
+                <button class="btn btn-primary" onclick="window.location.href='New Entry For Granules.html'"><span>➕</span><span>New Entry</span></button>
+                <button class="btn btn-primary" onclick="window.location.href='Details-Of-Granules.html'"><span>📋</span><span>View Details</span></button>
+                <button class="btn btn-primary" onclick="window.location.href='Download Excel Of Granules.html'"><span>📥</span><span>Download</span></button>
+            </div>
+        </div>
+        
+        <div class="stock-section">
+            <h2>Parcel Stock</h2>
+            <div class="button-container">
+                <button class="btn btn-primary" onclick="window.location.href='New-Entry.html'"><span>➕</span><span>New Entry</span></button>
+                <button class="btn btn-primary" onclick="window.location.href='Details.html'"><span>📋</span><span>View Details</span></button>
+                <button class="btn btn-primary" onclick="window.location.href='Download Excel.html'"><span>📥</span><span>Download</span></button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="logout-container">
+        <button class="btn btn-logout" onclick="window.location.href='index.html'">Log Out</button>
+    </div>
 
+    <footer>zeel Industries</footer>
 </body>
-
 </html>

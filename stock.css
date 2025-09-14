@@ -1,5 +1,5 @@
 body {
-  background-color: darkgray;
+  background-color: rgba(255, 255, 255, 0.964);
   font-family: system-ui, sans-serif;
   margin: 0;
   padding: 0;
@@ -22,6 +22,7 @@ body {
   margin-top: 15px;
   border-radius: 16px;
   background-color: black;
+  border: rgb(0, 0, 0) 5px solid;
   object-fit: cover;
   transition-duration: 0.3s;
 }
@@ -36,29 +37,54 @@ body {
 
 button[id="a"] {
   font-size: 20px;
+  font-weight: bolder;
   padding: 20px;
-  border: none;
   border-radius: 25px;
   width: 96%;
   margin: 0 auto;
-  background-color: #4CAF50;
-  color: white;
+  /* background-color: #4CAF50; */
+  color: rgb(0, 0, 0);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
-  background: transparent;
-  backdrop-filter: blur(10px);
+  /* background: linear-gradient(90deg, #40ff83 0%, #4abc61 100%); */
+  background-color: #fff;
   border: black 2px solid;
+  
 }
 
 button:hover[id="a"] {
 
   width: 100%;
-  background: transparent;
-  backdrop-filter: blur(40px);
+  background-color: transparent;
+  backdrop-filter: blur(10px);
   border: rgb(145, 235, 151) 5px solid;
   transition-duration: 0.3s;
 }
+button[id="b"] {
+  font-size: 20px;
+  font-weight: bolder;
+  padding: 20px;
+  border: none;
+  border-radius: 25px;
+  width: 96%;
+  margin: 0 auto;
+  /* background-color: #4CAF50; */
+  color: rgb(0, 0, 0);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+  /* background: linear-gradient(90deg, #ff6262 0%, #ff2121 100%); */
+  background-color: #fff;
+  border: black 2px solid;
+}
 
+button:hover[id="b"] {
+
+  width: 100%;
+  background: transparent;
+  backdrop-filter: blur(40px);
+  border: rgb(255, 121, 121) 5px solid;
+  transition-duration: 0.3s;
+}
 
 .logout {
   position: absolute;
@@ -113,4 +139,17 @@ button#logout:hover {
    bottom: 0;
    width: 100%;
    background: rgba(0, 0, 0, 0);
+}
+
+h1{
+  color: rgb(0, 0, 0);
+  /* text-shadow:  black .5px 0px 10px; */
+  
+}
+hr{
+  border: none;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.552);
+  margin: 20px 0;
+
 }

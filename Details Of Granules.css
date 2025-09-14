@@ -1,0 +1,168 @@
+    body {
+        background-color: rgb(255, 255, 255);
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .zeel :hover {
+        width: 75px;
+        height: 75px;
+        margin-top: 15px;
+        border-radius: 16px;
+        background-color: rgb(153, 255, 170);
+        object-fit: cover;
+        transition-duration: 0.3s;
+    }
+
+    .zeel img {
+        width: 70px;
+        height: 70px;
+        margin-top: 15px;
+        border-radius: 16px;
+        background-color: black;
+        border: rgb(0, 0, 0) 5px solid;
+        object-fit: cover;
+        transition-duration: 0.3s;
+    }
+    footer {
+   text-align: center;
+   padding: 10px;
+   font-size: 14px;
+   color: rgba(0, 0, 0, 0.375);
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   background: rgba(0, 0, 0, 0);
+}
+
+.home-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.home-btn {
+  margin-left: 16px;
+  font-size: 18px;
+  padding: 0;
+  border: 1px solid #000000;
+  border-radius: 12px;
+  background: none;
+  color: #000000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  width: 3cm;
+  height: 1cm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.home-btn:hover {
+  background: none;
+  transform: scale(1.05);
+}
+
+.home-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.home-text {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+ .st{
+      color: rgb(0, 0, 0);
+    }
+
+button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 20px;
+      border-radius: 10px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition-duration: 0.3s;
+    }
+
+button:hover {
+      background-color: #43a047;
+      font-size: 20px;
+      transition-duration: 0.3s;
+}
+
+    input[type="date"], input[type="text"] {
+      padding: 10px;
+      font-size: 20px;
+      margin: 5px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    #filterFrom, #filterTo, #searchBox {
+      width: 200px;
+      justify-content: center;
+      background: transparent;
+      backdrop-filter: blur(67px);
+      border: 1px solid #000000;
+      transition-duration: 0.3s;
+    }
+
+    #filterFrom:hover, #filterTo:hover, #searchBox:hover {
+      width: 240px;
+      justify-content: center;
+      background: transparent;
+      backdrop-filter: blur(67px);
+      border: 1px solid #000000;
+      transition-duration: 0.3s;
+    }
+.st{
+      color: rgb(0, 0, 0);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px auto;
+      
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #000000;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    tr:nth-child(even), tr:nth-child(odd) {
+    background-color: #cccccc46;
+    color: rgb(0, 0, 0);
+  
+}
+
+    .selected-row {
+  background-color: rgb(255, 255, 0) !important;
+  backdrop-filter: blur(67px);
+  
+}
+
+.departure-row {
+  background-color: rgb(255, 0, 0) !important;
+  backdrop-filter: blur(67px);
+  color: rgb(255, 255, 255) !important;
+  
+}

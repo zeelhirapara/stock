@@ -1,0 +1,141 @@
+    body {
+        background-color: rgb(255, 255, 255);
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .zeel :hover {
+        width: 75px;
+        height: 75px;
+        margin-top: 15px;
+        border-radius: 16px;
+        background-color: rgb(153, 255, 170);
+        object-fit: cover;
+        transition-duration: 0.3s;
+    }
+
+    .zeel img {
+        width: 70px;
+        height: 70px;
+        margin-top: 15px;
+        border-radius: 16px;
+        border: rgb(0, 0, 0) 5px solid;
+        background-color: black;
+        object-fit: cover;
+        transition-duration: 0.3s;
+    }
+    footer {
+   text-align: center;
+   padding: 10px;
+   font-size: 14px;
+   color: rgba(0, 0, 0, 0.375);
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   background: rgba(0, 0, 0, 0);
+}
+
+.home-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.home-btn {
+  margin-left: 16px;
+  font-size: 18px;
+  padding: 0;
+  border: 1px solid #000000;
+  border-radius: 12px;
+  background: none;
+  color: #000000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  width: 3cm;
+  height: 1cm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.home-btn:hover {
+  background: none;
+  transform: scale(1.05);
+}
+
+.home-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.home-text {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+    .box {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+    }
+
+    .input-group, .save, .openbtn {
+      margin: 10px;
+     
+    }
+
+    input, select, button {
+      padding: 12px;
+      font-size: 25px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      border: 1px solid #000000;
+      background: transparent;
+      backdrop-filter: blur(67px);
+    }
+
+    button {
+      background: transparent;
+      backdrop-filter: blur(15px);
+      border: black 2px solid;
+      color: rgb(0, 0, 0);
+      cursor: pointer;
+       font-size: 25px;
+      transition-duration: 0.3s;
+    }
+
+    button:hover {
+      background-color: #43a047;
+      transition-duration: 0.3s;
+       font-size: 35px;
+    }
+
+    .one-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+
+    @media screen and (min-width: 600px) {
+  body {
+    padding-top: 30px;
+  }
+  .one-line {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .input-group {
+    width: 45%;
+  }
+}
