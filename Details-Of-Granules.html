@@ -11,16 +11,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
         /* This uses the same big, bold design from before */
-        :root { --primary-color: #3b82f6; --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb); /* etc. */ }
+        :root { --primary-color: #3b82f6; --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb); }
         body { font-family: 'Nunito', sans-serif; background-color: #f4f7f9; color: #1e293b; margin: 0; padding: 20px; font-size: 17px; }
         header { display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
         header .zeel img { max-height: 60px; border-radius: 8px; }
         .container { max-width: 1200px; margin: 20px auto; padding: 30px 40px; background-color: #fff; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07); }
         .home-btn-container { position: absolute; top: 20px; left: 20px; }
-        .btn, .home-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; color: #fff; }
+        .btn, .home-btn, .modal-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; color: #fff; }
         .home-btn { background: #64748b; }
         .btn-primary { background: var(--primary-gradient); }
-        .btn-delete { background-color: #fee2e2; color: #b91c1c; border: none; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; }
+        .btn-delete { background-color: #fee2e2; color: #b91c1c; border: none; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; margin-left: 5px;}
+        .btn-edit { background-color: #dbeafe; color: #1d4ed8; border: none; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; }
         h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; color: var(--primary-color); }
         .controls { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
         .filters { display: flex; flex-direction: column; gap: 15px; }
@@ -32,8 +33,23 @@
         #dataTable thead th { background-color: #f8fafc; font-weight: 700; color: #475569; font-size: 0.9rem; text-transform: uppercase; }
         #dataTable tbody tr:hover { background-color: #f1f5f9; }
         .selected-row { background-color: #dbeafe !important; }
-        .departure-row { background-color: #fee2e2 !important; }
+        .dispatch-row { background-color: #fad1d1 !important; color: #000000; }
         footer { text-align: center; margin-top: 40px; color: #9ca3af; }
+        
+        /* --- NEW MODAL STYLES --- */
+        .modal { position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
+        .modal-content { background-color: #fff; margin: auto; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 500px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { margin: 0; font-size: 1.5rem; color: var(--primary-color); }
+        .close-btn { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-btn:hover { color: #333; }
+        .modal-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .modal-form label { font-weight: 600; margin-bottom: 5px; display: block; }
+        .modal-form input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; box-sizing: border-box; }
+        .modal-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .modal-btn.btn-save { background: var(--primary-gradient); }
+        .modal-btn.btn-cancel { background: #64748b; }
+
         @media (min-width: 1024px) { .controls { flex-direction: row; justify-content: space-between; align-items: center; } .filters, .actions { flex-direction: row; gap: 15px; } }
     </style>
 </head>
@@ -53,7 +69,7 @@
             </div>
             <div class="actions">
                 <button class="btn btn-primary" onclick="downloadSelectedPDF()"><span>📥</span><span>Selected</span></button>
-                <button class="btn btn-primary" onclick="downloadDeparturePDF()"><span>📥</span><span>Departures</span></button>
+                <button class="btn btn-primary" onclick="downloadDispatchPDF()"><span>📥</span><span>Dispatch</span></button>
             </div>
         </div>
         <div class="table-wrapper">
@@ -61,6 +77,28 @@
                 <thead><tr><th><input type="checkbox" id="selectAll" onclick="selectAllRows(this)"></th><th>Siral No.</th><th>Date</th><th>Bags</th><th>Color</th><th>Weight</th><th>Total Wt.</th><th>Price (Total)</th><th>Actions</th><th>To Parcel</th></tr></thead>
                 <tbody></tbody>
             </table>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Entry</h3>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="editForm" class="modal-form" onsubmit="saveChanges(event)">
+                <input type="hidden" id="editDocId">
+                <div><label for="editSiral">Siral No.</label><input type="text" id="editSiral" required></div>
+                <div><label for="editDate">Date</label><input type="date" id="editDate" required></div>
+                <div><label for="editBags">Bags</label><input type="number" id="editBags" required></div>
+                <div><label for="editColor">Color</label><input type="text" id="editColor" required></div>
+                <div><label for="editWeight">Weight</label><input type="number" step="0.01" id="editWeight" required></div>
+                <div><label for="editPrice">Price</label><input type="number" step="0.01" id="editPrice" required></div>
+                <div class="modal-actions">
+                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="modal-btn btn-save">Save Changes</button>
+                </div>
+            </form>
         </div>
     </div>
     
@@ -71,6 +109,7 @@
     
     <script>
         const tbody = document.querySelector("#dataTable tbody");
+        const editModal = document.getElementById("editModal");
         let allData = [];
 
         firebase.auth().onAuthStateChanged(user => {
@@ -84,10 +123,10 @@
                         entry.id = doc.id;
                         allData.push(entry);
                     });
-                    applyFilters(); // Render table with current filter settings
+                    applyFilters();
                 }, error => {
                     console.error("Error fetching data: ", error);
-                    tbody.innerHTML = `<tr><td colspan="10">Error loading data. Please check console.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="10">Error loading data.</td></tr>`;
                 });
             } else {
                 window.location.href = 'login.html';
@@ -102,32 +141,33 @@
             }
             dataToRender.forEach(entry => {
                 const tr = document.createElement("tr");
-                tr.className = entry.departure ? "departure-row" : "";
+                tr.className = entry.dispatch ? "dispatch-row" : "";
                 const totalWeight = (parseFloat(entry.bags) * parseFloat(entry.weight)).toFixed(2);
-                const totalPrice = (parseFloat(entry.bags) * parseFloat(entry.price)).toFixed(2);
+                const totalPrice = (parseFloat(totalWeight) * parseFloat(entry.price)).toFixed(2);
                 tr.innerHTML = `
-                  <td><input type="checkbox" class="row-check" data-id="${entry.id}" onchange="highlightRow(this)" ${entry.departure ? 'disabled' : ''}></td>
+                  <td><input type="checkbox" class="row-check" data-id="${entry.id}" onchange="highlightRow(this)" ${entry.dispatch ? 'disabled' : ''}></td>
                   <td>${entry.siral}</td><td>${entry.date}</td><td>${entry.bags}</td>
                   <td>${entry.color}</td><td>${entry.weight}</td><td>${totalWeight}</td>
                   <td>${entry.price} ( ${totalPrice})</td>
-                  <td><button class="btn-delete" onclick="deleteEntry('${entry.id}')">Delete</button></td>
-                  <td><input type="checkbox" class="departure-check" onchange="markRowAsDeparture('${entry.id}')" ${entry.departure ? 'checked disabled' : ''}></td>
+                  <td>
+                    <button class="btn-edit" onclick="openEditModal('${entry.id}')">Edit</button>
+                    <button class="btn-delete" onclick="deleteEntry('${entry.id}')">Delete</button>
+                  </td>
+                  <td><input type="checkbox" class="dispatch-check" onchange="toggleDispatchStatus('${entry.id}')" ${entry.dispatch ? 'checked' : ''}></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
         
-        // ✅ THIS FUNCTION IS NOW INCLUDED
         function highlightRow(checkbox) {
             const row = checkbox.closest("tr");
-            if (!row.querySelector(".departure-check").checked) {
+            if (!row.classList.contains("dispatch-row")) {
                 row.classList.toggle("selected-row", checkbox.checked);
             } else {
-                checkbox.checked = false;
+                checkbox.checked = false; // Prevent selecting dispatched rows
             }
         }
 
-        // ✅ THIS FUNCTION IS NOW INCLUDED
         function selectAllRows(masterCheckbox) {
             document.querySelectorAll(".row-check").forEach(cb => {
                 if (!cb.disabled) {
@@ -138,26 +178,91 @@
         }
         
         function deleteEntry(docId) {
-            if (!confirm("Are you sure?")) return;
+            if (!confirm("Are you sure you want to delete this entry?")) return;
             const user = firebase.auth().currentUser;
             if (user && docId) {
-                db.collection('users').doc(user.uid).collection('granules').doc(docId).delete();
+                db.collection('users').doc(user.uid).collection('granules').doc(docId).delete()
+                  .then(() => showToastMessage("Entry deleted successfully."))
+                  .catch(error => showToastMessage("Error deleting entry."));
             }
         }
         
-        function markRowAsDeparture(docId) {
+        // --- UPDATED DISPATCH FUNCTION ---
+        async function toggleDispatchStatus(docId) {
             const user = firebase.auth().currentUser;
-            if (user && docId) {
-                db.collection('users').doc(user.uid).collection('granules').doc(docId).update({ departure: true });
+            if (!user || !docId) return;
+
+            const docRef = db.collection('users').doc(user.uid).collection('granules').doc(docId);
+            try {
+                const doc = await docRef.get();
+                if (doc.exists) {
+                    const newStatus = !doc.data().dispatch; // Toggle current status
+                    await docRef.update({ dispatch: newStatus });
+                    const message = newStatus ? "Item marked as dispatched." : "Item marked as not dispatched.";
+                    showToastMessage(message);
+                }
+            } catch (error) {
+                console.error("Error updating dispatch status: ", error);
+                showToastMessage("Error updating status.");
+            }
+        }
+
+        // --- NEW EDIT MODAL FUNCTIONS ---
+        function openEditModal(docId) {
+            const entry = allData.find(e => e.id === docId);
+            if (!entry) return;
+
+            document.getElementById('editDocId').value = docId;
+            document.getElementById('editSiral').value = entry.siral;
+            document.getElementById('editDate').value = entry.date;
+            document.getElementById('editBags').value = entry.bags;
+            document.getElementById('editColor').value = entry.color;
+            document.getElementById('editWeight').value = entry.weight;
+            document.getElementById('editPrice').value = entry.price;
+            
+            editModal.style.display = "flex";
+        }
+
+        function closeModal() {
+            editModal.style.display = "none";
+        }
+
+        async function saveChanges(event) {
+            event.preventDefault();
+            const user = firebase.auth().currentUser;
+            const docId = document.getElementById('editDocId').value;
+            if (!user || !docId) return;
+
+            const updatedData = {
+                siral: document.getElementById('editSiral').value,
+                date: document.getElementById('editDate').value,
+                bags: document.getElementById('editBags').value,
+                color: document.getElementById('editColor').value,
+                weight: document.getElementById('editWeight').value,
+                price: document.getElementById('editPrice').value,
+            };
+
+            try {
+                await db.collection('users').doc(user.uid).collection('granules').doc(docId).update(updatedData);
+                showToastMessage("Entry updated successfully!");
+                closeModal();
+            } catch (error) {
+                console.error("Error saving changes: ", error);
+                showToastMessage("Error saving changes.");
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == editModal) {
+                closeModal();
             }
         }
         
-        // ✅ THIS FUNCTION IS NOW INCLUDED
+        // --- UTILITY AND FILTER FUNCTIONS ---
         function applyFilters() {
             const search = document.getElementById("searchBox").value.toLowerCase();
             const fromDateValue = document.getElementById("filterFrom").value;
             const toDateValue = document.getElementById("filterTo").value;
-            
             const from = fromDateValue ? new Date(fromDateValue) : null;
             const to = toDateValue ? new Date(toDateValue) : null;
             if(from) from.setHours(0,0,0,0);
@@ -165,23 +270,37 @@
             
             const filtered = allData.filter(entry => {
                 const totalWeight = (parseFloat(entry.bags) * parseFloat(entry.weight)).toFixed(2);
-                const totalPrice = (parseFloat(entry.bags) * parseFloat(entry.price)).toFixed(2);
+                const totalPrice = (parseFloat(totalWeight) * parseFloat(entry.price)).toFixed(2);
                 const entryDate = new Date(entry.date);
                 
                 const matchesSearch = Object.values(entry).some(val => String(val).toLowerCase().includes(search)) 
                                       || totalWeight.includes(search) 
                                       || totalPrice.includes(search);
-                
                 const matchesDate = (!from || entryDate >= from) && (!to || entryDate <= to);
-                
                 return matchesSearch && matchesDate;
             });
-
             renderTable(filtered);
         }
 
-        // ✅ THESE FUNCTIONS ARE NOW INCLUDED
-        function downloadSelectedPDF() {
+        function showToastMessage(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            Object.assign(toast.style, {
+                position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+                backgroundColor: '#2c3e50', color: 'white', padding: '12px 24px', borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: '1000', fontFamily: 'Nunito, sans-serif',
+                fontSize: '16px', opacity: '0', transition: 'opacity 0.3s ease-in-out'
+            });
+            document.body.appendChild(toast);
+            setTimeout(() => toast.style.opacity = '1', 100);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // --- PDF DOWNLOAD FUNCTIONS ---
+     function downloadSelectedPDF() {
             const selectedCheckboxes = Array.from(document.querySelectorAll(".row-check:checked"));
             if (selectedCheckboxes.length === 0) {
                 alert("No rows selected to download.");
@@ -210,30 +329,30 @@
             doc.save("selected_granules.pdf");
         }
 
-        function downloadDeparturePDF() {
-            const departureData = allData.filter(entry => entry.departure);
-            if (departureData.length === 0) {
-                alert("No departure data found.");
+        function downloadDispatchPDF() {
+            const dispatchData = allData.filter(entry => entry.dispatch);
+            if (dispatchData.length === 0) {
+                alert("No dispatch data found.");
                 return;
             }
             
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const headers = [["Siral", "Date", "Bags", "Color", "Weight", "Total Wt.", "Price (Total)"]];
-            const body = departureData.map(d => {
+            const body = dispatchData.map(d => {
                 const totalWeight = (parseFloat(d.bags) * parseFloat(d.weight)).toFixed(2);
                 const totalPrice = (parseFloat(d.bags) * parseFloat(d.price)).toFixed(2);
                 return [d.siral, d.date, d.bags, d.color, d.weight, totalWeight, `${d.price} ( ${totalPrice})`];
             });
 
-            const grandTotalWeight = departureData.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.weight)), 0);
-            const grandTotalPrice = departureData.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.price)), 0);
+            const grandTotalWeight = dispatchData.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.weight)), 0);
+            const grandTotalPrice = dispatchData.reduce((sum, d) => sum + (parseFloat(d.bags) * parseFloat(d.price)), 0);
             
             body.push(["", "", "", "", "Total:", grandTotalWeight.toFixed(2), `Total:  ${grandTotalPrice.toFixed(2)}`]);
             
-            doc.text("Departure Granules Data", 14, 10);
+            doc.text("Dispatch Granules Data", 14, 10);
             doc.autoTable({ head: headers, body, startY: 20 });
-            doc.save("departure_data.pdf");
+            doc.save("Dispatch_data.pdf");
         }
 
         document.getElementById("searchBox").addEventListener("input", applyFilters);

@@ -11,17 +11,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* This uses the same big, bold design from before */
-        :root { --primary-color: #3b82f6; --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb); /* etc. */ }
+        :root { --primary-color: #3b82f6; --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb); }
         body { font-family: 'Nunito', sans-serif; background-color: #f4f7f9; color: #1e293b; margin: 0; padding: 20px; font-size: 17px; }
         header { display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
         header .zeel img { max-height: 60px; border-radius: 8px; }
         .container { max-width: 1200px; margin: 20px auto; padding: 30px 40px; background-color: #fff; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07); }
         .home-btn-container { position: absolute; top: 20px; left: 20px; }
-        .btn, .home-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; color: #fff; }
+        .btn, .home-btn, .modal-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; color: #fff; }
         .home-btn { background: #64748b; }
         .btn-primary { background: var(--primary-gradient); }
-        .btn-delete { background-color: #fee2e2; color: #b91c1c; border: none; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; }
+        .btn-delete { background-color: #fee2e2; color: #b91c1c; border: none; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; margin-left: 5px; }
+        .btn-edit { background-color: #dbeafe; color: #1d4ed8; border: none; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; }
         h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; color: var(--primary-color); }
         .controls { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
         .filters, .actions { display: flex; flex-direction: column; gap: 15px; }
@@ -32,8 +32,22 @@
         #dataTable thead th { background-color: #f8fafc; font-weight: 700; color: #475569; font-size: 0.9rem; text-transform: uppercase; }
         #dataTable tbody tr:hover { background-color: #f1f5f9; }
         .selected-row { background-color: #dbeafe !important; }
-        .departure-row { background-color: #fee2e2 !important; }
+        .departure-row { background-color: #fad1d1 !important; color: #000000; }
         footer { text-align: center; margin-top: 40px; color: #9ca3af; }
+
+        /* --- MODAL STYLES --- */
+        .modal { position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
+        .modal-content { background-color: #fff; margin: auto; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 600px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { margin: 0; font-size: 1.5rem; color: var(--primary-color); }
+        .close-btn { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-btn:hover { color: #333; }
+        .modal-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .modal-form label { font-weight: 600; margin-bottom: 5px; display: block; }
+        .modal-form input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; box-sizing: border-box; }
+        .modal-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .modal-btn.btn-save { background: var(--primary-gradient); }
+        .modal-btn.btn-cancel { background: #64748b; }
         @media (min-width: 1024px) { .controls { flex-direction: row; justify-content: space-between; align-items: center; } .filters, .actions { flex-direction: row; gap: 15px; } }
     </style>
 </head>
@@ -64,12 +78,38 @@
         </div>
     </div>
     
+    <!-- MODAL FOR EDITING PARCEL ENTRIES -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Parcel Entry</h3>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="editForm" class="modal-form" onsubmit="saveChanges(event)">
+                <input type="hidden" id="editDocId">
+                <div><label for="editBell">Bell No.</label><input type="text" id="editBell" required></div>
+                <div><label for="editParcel">Parcel No.</label><input type="text" id="editParcel" required></div>
+                <div><label for="editWeight">Weight</label><input type="number" step="0.01" id="editWeight" required></div>
+                <div><label for="editDate">Date</label><input type="date" id="editDate" required></div>
+                <div><label for="editSize">Size</label><input type="text" id="editSize" required></div>
+                <div><label for="editPercentage">Percentage (%)</label><input type="text" id="editPercentage" required></div>
+                <div style="grid-column: 1 / -1;"><label for="editColor">Color</label><input type="text" id="editColor" required></div>
+                <div class="modal-actions">
+                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="modal-btn btn-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
     
-<script> const tbody = document.querySelector("#dataTable tbody");
+    <script>
+        const tbody = document.querySelector("#dataTable tbody");
+        const editModal = document.getElementById("editModal");
         let allData = [];
 
         firebase.auth().onAuthStateChanged(user => {
@@ -84,6 +124,9 @@
                         allData.push(entry);
                     });
                     applyFilters();
+                  }, error => {
+                      console.error("Error fetching parcel data:", error);
+                      tbody.innerHTML = `<tr><td colspan="10">Error loading data.</td></tr>`;
                   });
             } else {
                 window.location.href = 'login.html';
@@ -104,13 +147,73 @@
                   <td>${entry.bell}</td><td>${entry.parcel}</td><td>${entry.weight}</td>
                   <td>${entry.date}</td><td>${entry.size}</td><td>${entry.percentage}</td>
                   <td>${entry.color}</td>
-                  <td><button class="btn-delete" onclick="deleteEntry('${entry.id}')">Delete</button></td>
-                  <td><input type="checkbox" class="departure-check" onchange="markRowAsDeparture('${entry.id}')" ${entry.departure ? 'checked disabled' : ''}></td>
+                  <td>
+                      <button class="btn-edit" onclick="openEditModal('${entry.id}')">Edit</button>
+                      <button class="btn-delete" onclick="deleteEntry('${entry.id}')">Delete</button>
+                  </td>
+                  <td><input type="checkbox" class="departure-check" onchange="toggleDepartureStatus('${entry.id}')" ${entry.departure ? 'checked' : ''}></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
         
+        // --- EDIT MODAL SCRIPT ---
+        function openEditModal(docId) {
+            const entry = allData.find(e => e.id === docId);
+            if (!entry) {
+                showToastMessage("Error: Could not find entry to edit.");
+                return;
+            }
+
+            document.getElementById('editDocId').value = docId;
+            document.getElementById('editBell').value = entry.bell;
+            document.getElementById('editParcel').value = entry.parcel;
+            document.getElementById('editWeight').value = entry.weight;
+            document.getElementById('editDate').value = entry.date;
+            document.getElementById('editSize').value = entry.size;
+            document.getElementById('editPercentage').value = entry.percentage;
+            document.getElementById('editColor').value = entry.color;
+            
+            editModal.style.display = "flex";
+        }
+
+        function closeModal() {
+            editModal.style.display = "none";
+        }
+
+        async function saveChanges(event) {
+            event.preventDefault();
+            const user = firebase.auth().currentUser;
+            const docId = document.getElementById('editDocId').value;
+            if (!user || !docId) return;
+
+            const updatedData = {
+                bell: document.getElementById('editBell').value,
+                parcel: document.getElementById('editParcel').value,
+                weight: document.getElementById('editWeight').value,
+                date: document.getElementById('editDate').value,
+                size: document.getElementById('editSize').value,
+                percentage: document.getElementById('editPercentage').value,
+                color: document.getElementById('editColor').value,
+            };
+
+            try {
+                await db.collection('users').doc(user.uid).collection('parcels').doc(docId).update(updatedData);
+                showToastMessage("Parcel updated successfully!");
+                closeModal();
+            } catch (error) {
+                console.error("Error saving changes: ", error);
+                showToastMessage("Error saving changes.");
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == editModal) {
+                closeModal();
+            }
+        }
+
+        // --- CORE FUNCTIONS ---
         function applyFilters() {
             const search = document.getElementById("searchBox").value.toLowerCase();
             const from = document.getElementById("filterFrom").value ? new Date(document.getElementById("filterFrom").value) : null;
@@ -127,14 +230,74 @@
             renderTable(filtered);
         }
 
-        function deleteEntry(docId) { if (!confirm("Are you sure?")) return; const user = firebase.auth().currentUser; if (user && docId) { db.collection('users').doc(user.uid).collection('parcels').doc(docId).delete(); } }
-        function markRowAsDeparture(docId) { const user = firebase.auth().currentUser; if (user && docId) { db.collection('users').doc(user.uid).collection('parcels').doc(docId).update({ departure: true }); } }
-        function highlightRow(checkbox) { const row = checkbox.closest("tr"); if (!row.querySelector(".departure-check").checked) { row.classList.toggle("selected-row", checkbox.checked); } else { checkbox.checked = false; } }
-        function selectAllRows(masterCheckbox) { document.querySelectorAll(".row-check").forEach(cb => { if (!cb.disabled) { cb.checked = masterCheckbox.checked; highlightRow(cb); } }); }
+        function deleteEntry(docId) { 
+            if (!confirm("Are you sure you want to delete this parcel?")) return; 
+            const user = firebase.auth().currentUser; 
+            if (user && docId) { 
+                db.collection('users').doc(user.uid).collection('parcels').doc(docId).delete()
+                  .then(() => showToastMessage("Parcel deleted."))
+                  .catch(err => showToastMessage("Error deleting parcel."));
+            } 
+        }
+        
+        async function toggleDepartureStatus(docId) {
+            const user = firebase.auth().currentUser;
+            if (!user || !docId) return;
+
+            const docRef = db.collection('users').doc(user.uid).collection('parcels').doc(docId);
+            try {
+                const doc = await docRef.get();
+                if (doc.exists) {
+                    const newStatus = !doc.data().departure; // Toggle the status
+                    await docRef.update({ departure: newStatus });
+                    const message = newStatus ? "Marked as departed." : "Marked as not departed.";
+                    showToastMessage(message);
+                }
+            } catch (error) {
+                console.error("Error updating departure status: ", error);
+                showToastMessage("Error updating status.");
+            }
+        }
+
+        function highlightRow(checkbox) { 
+            const row = checkbox.closest("tr"); 
+            if (!row.classList.contains("departure-row")) { 
+                row.classList.toggle("selected-row", checkbox.checked); 
+            } else { 
+                checkbox.checked = false; 
+            } 
+        }
+        
+        function selectAllRows(masterCheckbox) { 
+            document.querySelectorAll(".row-check").forEach(cb => { 
+                if (!cb.disabled) { 
+                    cb.checked = masterCheckbox.checked; 
+                    highlightRow(cb); 
+                } 
+            }); 
+        }
+
+        // --- UTILITY AND PDF FUNCTIONS ---
+        function showToastMessage(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            Object.assign(toast.style, {
+                position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+                backgroundColor: '#2c3e50', color: 'white', padding: '12px 24px', borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: '1000', fontFamily: 'Nunito, sans-serif',
+                fontSize: '16px', opacity: '0', transition: 'opacity 0.3s ease-in-out'
+            });
+            document.body.appendChild(toast);
+            setTimeout(() => toast.style.opacity = '1', 100);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
 
         function downloadSelectedPDF() {
             const selectedCheckboxes = Array.from(document.querySelectorAll(".row-check:checked"));
-            if (selectedCheckboxes.length === 0) { alert("No rows selected."); return; }
+            if (selectedCheckboxes.length === 0) { showToastMessage("No rows selected."); return; }
             const selectedIds = selectedCheckboxes.map(cb => cb.getAttribute('data-id'));
             const selectedData = allData.filter(entry => selectedIds.includes(entry.id));
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
@@ -147,7 +310,7 @@
 
         function downloadDeparturePDF() {
             const departureData = allData.filter(entry => entry.departure);
-            if (departureData.length === 0) { alert("No departure data found."); return; }
+            if (departureData.length === 0) { showToastMessage("No departure data found."); return; }
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
             const headers = [["Bell", "Parcel", "Weight", "Date", "Size", "Percentage", "Color"]];
             const body = departureData.map(d => [d.bell, d.parcel, d.weight, d.date, d.size, d.percentage, d.color]);
@@ -159,7 +322,7 @@
         document.getElementById("searchBox").addEventListener("input", applyFilters);
         document.getElementById("filterFrom").addEventListener("change", applyFilters);
         document.getElementById("filterTo").addEventListener("change", applyFilters);
-</script>
+    </script>
     <footer>zeel Industries</footer>
 </body>
 </html>
