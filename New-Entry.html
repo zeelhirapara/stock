@@ -63,70 +63,20 @@
             text-decoration: none;
             color: #fff;
         }
-        .home-btn { 
-            background: #64748b; 
-        }
-        .home-btn:hover { 
-            background: #475569; 
-            transform: translateY(-2px); 
-        }
-        .btn-primary { 
-            background: var(--primary-gradient); 
-        }
-        .btn-primary:hover { 
-            background: var(--primary-hover); 
-            transform: translateY(-2px); 
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); 
-        }
-        .btn svg { 
-            width: 24px; 
-            height: 24px; 
-        }
-        h2 { 
-            text-align: center; 
-            margin-bottom: 30px; 
-            font-size: 2rem; 
-            font-weight: 700; 
-            color: var(--primary-color); 
-        }
-        .form-grid { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 25px; 
-        }
-        .input-group { 
-            display: flex; 
-            flex-direction: column; 
-        }
-        .input-group label { 
-            margin-bottom: 10px; 
-            font-weight: 600; 
-        }
-        .input-group input, .input-group select { 
-            padding: 14px; 
-            border: 1px solid var(--border-color); 
-            border-radius: 10px; 
-            font-size: 1.05rem; 
-            font-family: 'Nunito', sans-serif; 
-            transition: all 0.2s ease; 
-        }
-        .input-group input:focus, .input-group select:focus { 
-            outline: none; 
-            border-color: var(--primary-color); 
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); 
-        }
-        .save-button-container { 
-            text-align: center; 
-            margin-top: 40px; 
-        }
-        footer { 
-            text-align: center; 
-            margin-top: 40px; 
-            color: #9ca3af; 
-        }
-        @media (min-width: 768px) { 
-            .form-grid { grid-template-columns: 1fr 1fr; } 
-        }
+        .home-btn { background: #64748b; }
+        .home-btn:hover { background: #475569; transform: translateY(-2px); }
+        .btn-primary { background: var(--primary-gradient); }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+        .btn svg { width: 24px; height: 24px; }
+        h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; font-weight: 700; color: var(--primary-color); }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { margin-bottom: 10px; font-weight: 600; }
+        .input-group input, .input-group select { padding: 14px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 1.05rem; font-family: 'Nunito', sans-serif; transition: all 0.2s ease; }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+        .save-button-container { text-align: center; margin-top: 40px; }
+        footer { text-align: center; margin-top: 40px; color: #9ca3af; }
+        @media (min-width: 768px) { .form-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
@@ -165,9 +115,8 @@
     <script src="firebase-config.js"></script>
     
     <script>
-        // --- This function runs automatically when the page loads ---
+        // --- CORRECTED window.onload FUNCTION ---
         window.onload = () => {
-            // Get references to all the form inputs
             const parcelInput = document.getElementById('parcel-number');
             const bellInput = document.getElementById('Bell');
             const dateInput = document.getElementById('date');
@@ -175,10 +124,7 @@
             const percentageInput = document.getElementById('percentage');
             const colorInput = document.getElementById('color');
 
-            // 1. Set the date to today
             dateInput.value = new Date().toISOString().split("T")[0];
-
-            // 2. Restore the last used dropdown values from localStorage
             const lastSize = localStorage.getItem('lastParcelSize');
             const lastPercentage = localStorage.getItem('lastParcelPercentage');
             const lastColor = localStorage.getItem('lastParcelColor');
@@ -186,91 +132,101 @@
             if (lastPercentage) percentageInput.value = lastPercentage;
             if (lastColor) colorInput.value = lastColor;
 
-            // 3. Automatically set Bell and Parcel numbers
-            firebase.auth().onAuthStateChanged(user => {
+            firebase.auth().onAuthStateChanged(async (user) => {
                 if (user) {
-                    const parcelsRef = db.collection('users').doc(user.uid).collection('parcels');
-                    
-                    // Get all parcels, ordered by creation time, to find the latest one
-                    parcelsRef.orderBy("createdAt", "desc").limit(1).get()
-                        .then(querySnapshot => {
-                            if (querySnapshot.empty) {
-                                // This is the very first entry for this user
-                                bellInput.value = 1;
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        if (!userDoc.exists || !userDoc.data().groupId) {
+                            throw new Error("Group ID not found for this user.");
+                        }
+                        const groupId = userDoc.data().groupId;
+
+                        const parcelsRef = db.collection('groups').doc(groupId).collection('parcels');
+                        
+                        const latestParcelSnapshot = await parcelsRef.orderBy("createdAt", "desc").limit(1).get();
+                        
+                        if (latestParcelSnapshot.empty) {
+                            bellInput.value = 1;
+                            parcelInput.value = 1;
+                        } else {
+                            const latestParcel = latestParcelSnapshot.docs[0].data();
+                            const lastBell = parseInt(latestParcel.bell);
+                            
+                            const bellSnapshot = await parcelsRef.where("bell", "==", latestParcel.bell).get();
+                            const bellCount = bellSnapshot.size;
+
+                            if (bellCount >= 10) {
+                                bellInput.value = lastBell + 1;
                                 parcelInput.value = 1;
                             } else {
-                                // Get the data from the most recent parcel
-                                const latestParcel = querySnapshot.docs[0].data();
-                                const lastBell = parseInt(latestParcel.bell);
-                                const lastParcel = parseInt(latestParcel.parcel);
-
-                                // Now, check how many parcels are in the last bell
-                                parcelsRef.where("bell", "==", latestParcel.bell).get()
-                                    .then(bellSnapshot => {
-                                        const bellCount = bellSnapshot.size;
-
-                                        if (bellCount >= 10) {
-                                            // Bell is full, start a new one
-                                            bellInput.value = lastBell + 1;
-                                            parcelInput.value = 1; // Reset parcel number to 1
-                                        } else {
-                                            // Bell is not full, continue with it
-                                            bellInput.value = lastBell;
-                                            parcelInput.value = lastParcel + 1;
-                                        }
-                                    });
+                                bellInput.value = lastBell;
+                                parcelInput.value = bellCount + 1;
                             }
-                        });
+                        }
+                    } catch (error) {
+                        console.error("Error fetching next parcel number:", error);
+                        alert("Could not load next parcel number. Error: " + error.message);
+                    }
                 } else {
                     window.location.href = 'login.html';
                 }
             });
         };
 
-        // --- Updated saveData function ---
-        function saveData() {
+        // --- CORRECTED saveData FUNCTION ---
+        async function saveData() {
             const user = firebase.auth().currentUser;
             if (!user) {
                 alert("You must be logged in to save data.");
                 return window.location.href = 'login.html';
             }
 
-            const parcelInput = document.getElementById('parcel-number');
-            const weight = document.getElementById('weight').value;
-            const date = document.getElementById('date').value;
-            const size = document.getElementById('size').value;
-            const percentage = document.getElementById('percentage').value;
-            const color = document.getElementById('color').value;
-            const bellInput = document.getElementById('Bell');
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists || !userDoc.data().groupId) {
+                    throw new Error("Group ID not found for this user. Cannot save data.");
+                }
+                const groupId = userDoc.data().groupId;
+                const editorName = userDoc.data().fullName || user.email;
 
-            if (!parcelInput.value || !weight || !date || !size || !percentage || !color || !bellInput.value) { 
-                return alert("Please fill all fields.");
-            }
+                const parcel = document.getElementById('parcel-number').value;
+                const weight = document.getElementById('weight').value;
+                const date = document.getElementById('date').value;
+                const size = document.getElementById('size').value;
+                const percentage = document.getElementById('percentage').value;
+                const color = document.getElementById('color').value;
+                const bell = document.getElementById('Bell').value;
 
-            // Save the latest dropdown choices for next time
-            localStorage.setItem('lastParcelSize', size);
-            localStorage.setItem('lastParcelPercentage', percentage);
-            localStorage.setItem('lastParcelColor', color);
+                if (!parcel || !weight || !date || !size || !percentage || !color || !bell) { 
+                    return alert("Please fill all fields.");
+                }
 
-            db.collection('users').doc(user.uid).collection('parcels').add({
-                bell: bellInput.value,
-                parcel: parcelInput.value,
-                weight: weight,
-                date: date,
-                size: size,
-                percentage: percentage,
-                color: color,
-                departure: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                //alert('Parcel saved successfully!');
-                // Reload the page to auto-fill the next numbers
+                localStorage.setItem('lastParcelSize', size);
+                localStorage.setItem('lastParcelPercentage', percentage);
+                localStorage.setItem('lastParcelColor', color);
+                
+                const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+                await db.collection('groups').doc(groupId).collection('parcels').add({
+                    bell: parseInt(bell),
+                    parcel: parseInt(parcel),
+                    weight: weight,
+                    date: date,
+                    size: size,
+                    percentage: percentage,
+                    color: color,
+                    departure: false,
+                    createdBy: editorName,
+                    createdAt: timestamp,
+                    lastEditedBy: editorName,
+                    lastEditedAt: timestamp
+                });
+                
                 window.location.reload();
-            })
-            .catch((error) => {
-                console.error("Error saving parcel: ", error);
-            });
+            } catch (error) {
+                console.error("DATABASE ERROR:", error);
+                alert("Could not save the parcel. An error occurred.\n\nError Message: " + error.message);
+            }
         }
     </script>
     <footer>zeel Industries</footer>

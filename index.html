@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zeel Industries Login</title>
     <link rel="stylesheet" href="login.css">
-    <link type="module" src="login.js" defer>
-    </script>
 </head>
 
 <body>
@@ -121,6 +119,11 @@
                         <div class="error-message" id="confirmPasswordError">Passwords don't match</div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="groupCode">Group Code</label>
+                        <input type="password" id="groupCode" placeholder="Enter the secret group code" required>
+                        <div class="error-message" id="groupCodeError">The group code is incorrect</div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Create Account</button>
 
                     <div class="form-footer">
@@ -131,16 +134,13 @@
         </div>
     </div>
 
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
-    <!-- Firebase Configuration -->
     <script src="firebase-config.js"></script>
 
-    <!-- Authentication Script -->
     <script src="auth.js"></script>
 
     <script>
@@ -148,10 +148,8 @@
         function switchTab(tabName) {
             const tabs = document.querySelectorAll('.tab');
             const tabContents = document.querySelectorAll('.tab-content');
-
             tabs.forEach(tab => tab.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
-
             document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
             document.getElementById(tabName).classList.add('active');
         }
@@ -176,139 +174,15 @@
             const uppercaseHint = document.getElementById('uppercaseHint');
             const numberHint = document.getElementById('numberHint');
             const specialHint = document.getElementById('specialHint');
-
             let strength = 0;
-
-            // Check length
-            if (password.length >= 8) {
-                strength += 25;
-                lengthHint.classList.add('valid');
-            } else {
-                lengthHint.classList.remove('valid');
-            }
-
-            // Check uppercase
-            if (/[A-Z]/.test(password)) {
-                strength += 25;
-                uppercaseHint.classList.add('valid');
-            } else {
-                uppercaseHint.classList.remove('valid');
-            }
-
-            // Check numbers
-            if (/[0-9]/.test(password)) {
-                strength += 25;
-                numberHint.classList.add('valid');
-            } else {
-                numberHint.classList.remove('valid');
-            }
-
-            // Check special chars
-            if (/[^A-Za-z0-9]/.test(password)) {
-                strength += 25;
-                specialHint.classList.add('valid');
-            } else {
-                specialHint.classList.remove('valid');
-            }
-
-            // Update strength meter
+            if (password.length >= 8) { strength += 25; lengthHint.classList.add('valid'); } else { lengthHint.classList.remove('valid'); }
+            if (/[A-Z]/.test(password)) { strength += 25; uppercaseHint.classList.add('valid'); } else { uppercaseHint.classList.remove('valid'); }
+            if (/[0-9]/.test(password)) { strength += 25; numberHint.classList.add('valid'); } else { numberHint.classList.remove('valid'); }
+            if (/[^A-Za-z0-9]/.test(password)) { strength += 25; specialHint.classList.add('valid'); } else { specialHint.classList.remove('valid'); }
             strengthMeter.style.width = strength + '%';
-
-            // Update color based on strength
-            if (strength < 50) {
-                strengthMeter.style.backgroundColor = '#ef4444'; // red
-            } else if (strength < 75) {
-                strengthMeter.style.backgroundColor = '#f59e0b'; // amber
-            } else {
-                strengthMeter.style.backgroundColor = '#10b981'; // emerald
-            }
+            if (strength < 50) { strengthMeter.style.backgroundColor = '#ef4444'; } else if (strength < 75) { strengthMeter.style.backgroundColor = '#f59e0b'; } else { strengthMeter.style.backgroundColor = '#10b981'; }
         });
-
-        // Form validation for signup
-        // document.getElementById('signupForm').addEventListener('submit', function (e) {
-        //     e.preventDefault();
-        //     let isValid = true;
-
-        //     // Validate name
-        //     const name = document.getElementById('fullName').value;
-        //     if (name.trim() === '') {
-        //         document.getElementById('nameError').style.display = 'block';
-        //         isValid = false;
-        //     } else {
-        //         document.getElementById('nameError').style.display = 'none';
-        //     }
-
-        //     // Validate email
-        //     const email = document.getElementById('signupEmail').value;
-        //     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        //         document.getElementById('emailError').style.display = 'block';
-        //         isValid = false;
-        //     } else {
-        //         document.getElementById('emailError').style.display = 'none';
-        //     }
-
-        //     // Validate password
-        //     const password = document.getElementById('signupPassword').value;
-        //     const passwordError = document.getElementById('passwordError');
-
-        //     if (password.length < 8 ||
-        //         !/[A-Z]/.test(password) ||
-        //         !/[0-9]/.test(password) ||
-        //         !/[^A-Za-z0-9]/.test(password)) {
-        //         passwordError.style.display = 'block';
-        //         isValid = false;
-        //     } else {
-        //         passwordError.style.display = 'none';
-        //     }
-
-        //     // Validate password confirmation
-        //     const confirmPassword = document.getElementById('confirmPassword').value;
-        //     if (password !== confirmPassword) {
-        //         document.getElementById('confirmPasswordError').style.display = 'block';
-        //         isValid = false;
-        //     } else {
-        //         document.getElementById('confirmPasswordError').style.display = 'none';
-        //     }
-
-        //     if (isValid) {
-        //         // alert('Account created successfully! Redirecting to dashboard...');
-        //         window.location.href = 'stock.html';
-        //         // Here you would typically send data to server
-        //     }
-        // });
-
-        // Form validation for login
-        // document.getElementById('loginForm').addEventListener('submit', function (e) {
-        //     e.preventDefault();
-        //     let isValid = true;
-
-        //     // Validate email
-        //     const email = document.getElementById('loginEmail').value;
-        //     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        //         document.getElementById('loginEmailError').style.display = 'block';
-        //         isValid = false;
-        //     } else {
-        //         document.getElementById('loginEmailError').style.display = 'none';
-        //     }
-
-        //     // Validate password
-        //     const password = document.getElementById('loginPassword').value;
-        //     if (password.length < 8) {
-        //         document.getElementById('loginPasswordError').style.display = 'block';
-        //         isValid = false;
-        //     } else {
-        //         document.getElementById('loginPasswordError').style.display = 'none';
-        //     }
-
-        //     if (isValid) {
-        //         // alert('Login successful! Redirecting to dashboard...');
-        //         window.location.href = 'stock.html'; // Redirect to stck.html
-        //     }
-        // });
-
-
     </script>
-    <script src="login.js"></script>
 
     <footer>zeel Industries</footer>
 </body>

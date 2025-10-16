@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-       
         :root {
             --primary-color: #3b82f6;
             --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb);
@@ -19,34 +19,149 @@
             --light-gray: #f4f7f9;
             --border-color: #e2e8f0;
             --text-color: #1e293b;
-            --card-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-        body { font-family: 'Nunito', sans-serif; background-color: var(--light-gray); color: var(--text-color); margin: 0; padding: 20px; font-size: 17px; }
-        header { display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
-        header .zeel img { max-height: 60px; border-radius: 8px; }
-        .container { max-width: 800px; margin: 20px auto; padding: 30px 40px; background-color: #fff; border-radius: 16px; box-shadow: var(--card-shadow); text-align: center; }
-        .home-btn-container { position: absolute; top: 20px; left: 20px; }
-        .btn, .home-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; text-decoration: none; color: #fff; }
-        .home-btn { background: var(--secondary-color); }
-        .home-btn:hover { background: var(--secondary-hover); transform: translateY(-2px); }
-        .btn-primary { background: var(--primary-gradient); }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
-        .btn-secondary { background: var(--secondary-color); }
-        .btn-secondary:hover { background: var(--secondary-hover); transform: translateY(-2px); }
-        .btn svg { width: 22px; height: 22px; }
-        h2 { margin-top: 0; margin-bottom: 30px; font-size: 2rem; color: var(--primary-color); }
-        .date-selectors { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
-        .date-selectors input[type="date"] { padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 1rem; font-family: 'Nunito', sans-serif; }
-        .range-buttons, .download-buttons { display: flex; flex-direction: column; gap: 15px; }
-        footer { text-align: center; margin-top: 40px; color: #9ca3af; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            font-size: 17px;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        header .zeel img {
+            max-height: 60px;
+            border-radius: 8px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px 40px;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        .home-btn-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .btn,
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .home-btn {
+            background: var(--secondary-color);
+        }
+
+        .home-btn:hover {
+            background: var(--secondary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .date-selectors {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .date-selectors input[type="date"] {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .range-buttons,
+        .download-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #9ca3af;
+        }
 
         @media (min-width: 768px) {
-            .date-selectors { flex-direction: row; justify-content: center; align-items: center; }
-            .range-buttons, .download-buttons { flex-direction: row; justify-content: center; flex-wrap: wrap; }
+            .date-selectors {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .range-buttons,
+            .download-buttons {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
         }
     </style>
-    
+
 </head>
+
 <body>
     <header></header>
     <div class="home-btn-container">
@@ -66,11 +181,13 @@
         </div>
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
         <div class="download-buttons">
-            <button onclick="downloadAllDataExcel()" class="btn btn-primary"><span>📥</span><span>All Data</span></button>
-            <button onclick="downloadGroupedByColorExcel()" class="btn btn-primary"><span>📥</span><span>Grouped by Color</span></button>
+            <button onclick="downloadAllDataExcel()" class="btn btn-primary"><span>📥</span><span>All
+                    Data</span></button>
+            <button onclick="downloadGroupedByColorExcel()" class="btn btn-primary"><span>📥</span><span>Grouped by
+                    Color</span></button>
         </div>
     </div>
-    
+
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -98,7 +215,7 @@
             // 1. Fetch all granules for the user from Firestore
             const querySnapshot = await db.collection('users').doc(user.uid).collection('granules').get();
             const allUserGranules = querySnapshot.docs.map(doc => doc.data());
-            
+
             if (allUserGranules.length === 0) {
                 alert("No data found in your account.");
                 return null;
@@ -108,7 +225,7 @@
             const fromDate = new Date(fromDateStr);
             const toDate = new Date(toDateStr);
             toDate.setHours(23, 59, 59, 999);
-            
+
             const filtered = allUserGranules.filter(entry => {
                 const entryDate = new Date(entry.date);
                 return entryDate >= fromDate && entryDate <= toDate;
@@ -131,7 +248,7 @@
                 const totalPrice = (parseFloat(d.bags) * parseFloat(d.price)).toFixed(2);
                 return [d.siral, d.date, d.bags, d.color, d.weight, totalWeight, d.price, totalPrice, d.departure ? "Departed" : "In Stock"];
             });
-            
+
             const worksheet = XLSX.utils.aoa_to_sheet([headers, ...dataForSheet]);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "All Granule Data");
@@ -191,4 +308,5 @@
         }
     </script>
 </body>
+
 </html>

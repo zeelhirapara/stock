@@ -4,27 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Entry For Granules</title>
+    <link rel="icon" href="aa.jpg" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-         /* This uses the same big, bold design from before */
-        :root { --primary-color: #3b82f6; --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb); /* etc. */ }
-        body { font-family: 'Nunito', sans-serif; background-color: #f4f7f9; color: #1e293b; margin: 0; padding: 20px; font-size: 17px; }
-        header { display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
-        header .zeel img { max-height: 60px; border-radius: 8px; }
-        .container { max-width: 900px; margin: 20px auto; padding: 30px 40px; background-color: #fff; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07); }
-        .home-btn-container { position: absolute; top: 20px; left: 20px; }
-        .btn, .home-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-decoration: none; color: #fff; }
+        :root {
+            --primary-color: #3b82f6;
+            --primary-gradient: linear-gradient(180deg, #3b82f6, #2563eb);
+            --primary-hover: #2563eb;
+            --light-gray: #f4f7f9;
+            --border-color: #e2e8f0;
+            --text-color: #1e293b;
+            --card-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            font-size: 17px;
+        }
+        header { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin-bottom: 30px; 
+        }
+        header .zeel img { 
+            max-height: 60px; 
+            border-radius: 8px; 
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px 40px;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+        .home-btn-container { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+        }
+        .btn, .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #fff;
+        }
         .home-btn { background: #64748b; }
+        .home-btn:hover { background: #475569; }
         .btn-primary { background: var(--primary-gradient); }
-        h2 { text-align: center; margin-bottom: 30px; font-size: 2rem; font-weight: 700; color: var(--primary-color); }
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
-        .input-group { display: flex; flex-direction: column; }
-        .input-group label { margin-bottom: 10px; font-weight: 600; }
-        .input-group input, .input-group select { padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1.05rem; font-family: 'Nunito', sans-serif; }
-        .save-button-container { text-align: center; margin-top: 40px; }
-        footer { text-align: center; margin-top: 40px; color: #9ca3af; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        h2 { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            font-size: 2rem; 
+            font-weight: 700; 
+            color: var(--primary-color); 
+        }
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 25px; 
+        }
+        .input-group { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .input-group label { 
+            margin-bottom: 10px; 
+            font-weight: 600; 
+        }
+        .input-group input, .input-group select { 
+            padding: 14px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 10px; 
+            font-size: 1.05rem; 
+            font-family: 'Nunito', sans-serif; 
+            transition: all 0.2s ease; 
+        }
+        .input-group input:focus, .input-group select:focus { 
+            outline: none; 
+            border-color: var(--primary-color); 
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); 
+        }
+        .save-button-container { 
+            text-align: center; 
+            margin-top: 40px; 
+        }
+        footer { 
+            text-align: center; 
+            margin-top: 40px; 
+            color: #9ca3af; 
+        }
         @media (min-width: 768px) { .form-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
@@ -34,7 +118,6 @@
     </header>
     <div class="home-btn-container">
         <a href="stock.html" class="home-btn">
-            <span></span>
             <span>Home</span>
         </a>
     </div>
@@ -57,7 +140,7 @@
             <div class="input-group">
                 <label for="color">Color</label>
                 <select id="color">
-                    <option value="" disabled>Select a color</option>
+                    <option value="" disabled selected>Select a color</option>
                     <option value="green">green</option>
                     <option value="black-green">black-green</option>
                     <option value="golden">golden</option>
@@ -65,11 +148,11 @@
             </div>
             <div class="input-group">
                 <label for="weight">Weight (per bag)</label>
-                <input type="number" id="weight">
+                <input type="number" id="weight" value="25.00">
             </div>
             <div class="input-group">
-                <label for="price">Price (per bag)</label>
-                <input type="number" id="price" placeholder="e.g., 150.00">
+                <label for="price">Price (per kg)</label>
+                <input type="number" id="price" placeholder="e.g., 60.00">
             </div>
         </div>
         <div class="save-button-container">
@@ -86,100 +169,134 @@
     <script src="firebase-config.js"></script>
 
     <script>
-        window.onload = () => {
-            const siralInput = document.getElementById('Siral-number');
-            const dateInput = document.getElementById('date');
-            const colorInput = document.getElementById('color');
-            const weightInput = document.getElementById('weight');
+        // This function runs automatically when the page loads
+        // In New Entry For Granules.html
 
-            dateInput.value = new Date().toISOString().split("T")[0];
-            weightInput.value = "25.00";
-            const lastColor = localStorage.getItem('lastGranuleColor');
-            if (lastColor) { colorInput.value = lastColor; } else { colorInput.value = ""; }
+// This function runs automatically when the page loads
+// In New Entry For Granules.html
 
-            firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    db.collection('users').doc(user.uid).collection('granules').get()
-                        .then(querySnapshot => {
-                            if (querySnapshot.empty) {
-                                siralInput.value = 1;
-                            } else {
-                                let maxSiral = 0;
-                                querySnapshot.forEach(doc => {
-                                    const siral = parseInt(doc.data().siral);
-                                    if (siral > maxSiral) { maxSiral = siral; }
-                                });
-                                siralInput.value = maxSiral + 1;
-                            }
-                        });
+// In New Entry For Granules.html
+
+window.onload = () => {
+    const siralInput = document.getElementById('Siral-number');
+    const dateInput = document.getElementById('date');
+    const colorInput = document.getElementById('color');
+
+    dateInput.value = new Date().toISOString().split("T")[0];
+    const lastColor = localStorage.getItem('lastGranuleColor');
+    if (lastColor) {
+        colorInput.value = lastColor;
+    }
+
+    // FIX: The onAuthStateChanged function is now async to handle fetching the groupId
+    firebase.auth().onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                // 1. Get the user's profile to find their groupId
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists) {
+                    throw new Error("User profile not found.");
+                }
+                const groupId = userDoc.data().groupId;
+
+                // 2. Use the groupId to query the SHARED granules collection
+                const granulesRef = db.collection('groups').doc(groupId).collection('granules');
+                
+                const querySnapshot = await granulesRef.orderBy("siral", "desc").limit(1).get();
+                
+                if (querySnapshot.empty) {
+                    siralInput.value = 1;
                 } else {
-                    window.location.href = 'login.html';
+                    const latestSiral = querySnapshot.docs[0].data().siral;
+                    siralInput.value = parseInt(latestSiral) + 1;
                 }
-            });
-        };
-
-        async function saveData() {
-            const user = firebase.auth().currentUser;
-            if (!user) {
-                alert("You must be logged in to save data.");
-                return window.location.href = 'login.html';
+            } catch (error) {
+                console.error("Error fetching next Siral Number:", error);
+                alert("Could not load the next Siral Number. Error: " + error.message);
             }
-
-            const siral = document.getElementById('Siral-number').value;
-            const bags = document.getElementById('bags').value;
-            const date = document.getElementById('date').value;
-            const color = document.getElementById('color').value;
-            const weight = document.getElementById('weight').value;
-            const price = document.getElementById('price').value;
-
-            if (!siral || !bags || !date || !color || !weight || !price) {
-                return alert("Please fill all fields.");
-            }
-
-            localStorage.setItem('lastGranuleColor', color);
-            
-            const querySnapshot = await db.collection('users').doc(user.uid).collection('granules')
-                .where('siral', '==', siral)
-                .get();
-
-            if (!querySnapshot.empty) {
-                // --- If an entry is found, UPDATE it ---
-                const existingDoc = querySnapshot.docs[0];
-                const existingData = existingDoc.data();
-
-                if (existingData.departure) {
-                    return alert(`Siral Number ${siral} has already been marked as departed and cannot be modified.`);
-                }
-
-                const newBags = (parseFloat(existingData.bags) + parseFloat(bags)).toFixed(2);
-                const newWeight = (parseFloat(existingData.weight) + parseFloat(weight)).toFixed(2);
-                
-                await db.collection('users').doc(user.uid).collection('granules').doc(existingDoc.id).update({
-                    bags: newBags,
-                    weight: newWeight,
-                    date: date // Update the date to the latest entry
-                    // NOTICE: We are NOT updating the price OR the color.
-                });
-
-                alert(`Siral Number ${siral} has been updated successfully.`);
-
-            } else {
-                // --- If it's a new entry, CREATE it ---
-                await db.collection('users').doc(user.uid).collection('granules').add({
-                    siral: siral,
-                    bags: bags,
-                    date: date,
-                    color: color,
-                    weight: weight,
-                    price: price,
-                    departure: false,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                //alert("New granule entry saved!");
-            }
-            window.location.reload();
+        } else {
+            window.location.href = 'index.html';
         }
+    });
+};
+        // This function saves the data to the database
+        async function saveData() {
+    console.log("Save button was clicked and function started!");
+    const user = firebase.auth().currentUser;
+
+    if (!user) {
+        alert("Error: You are not logged in. Please log in and try again.");
+        return window.location.href = 'login.html';
+    }
+
+    try {
+        // --- FIX: Get the user's groupId first ---
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists || !userDoc.data().groupId) {
+            throw new Error("Group ID not found for this user. Cannot save data.");
+        }
+        const groupId = userDoc.data().groupId;
+        const editorName = userDoc.data().fullName || user.email;
+
+        // Get and validate form data
+        const siralValue = document.getElementById('Siral-number').value;
+        const bags = document.getElementById('bags').value;
+        const date = document.getElementById('date').value;
+        const color = document.getElementById('color').value;
+        const weight = document.getElementById('weight').value;
+        const price = document.getElementById('price').value;
+
+        if (!siralValue || !bags || !date || !color || !weight || !price) {
+            return alert("Validation Error: Please fill all fields before saving.");
+        }
+        const siralNumber = parseInt(siralValue, 10);
+        if (isNaN(siralNumber)) {
+            return alert("Validation Error: Siral Number must be a valid number.");
+        }
+
+        // --- FIX: Use the correct group path to save data ---
+        const granulesRef = db.collection('groups').doc(groupId).collection('granules');
+        const querySnapshot = await granulesRef.where('siral', '==', siralNumber).get();
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+        if (!querySnapshot.empty) {
+            // UPDATE existing entry
+            const existingDoc = querySnapshot.docs[0];
+            await existingDoc.ref.update({
+                bags: (parseFloat(existingDoc.data().bags) + parseFloat(bags)).toFixed(2),
+                date: date,
+                lastEditedBy: editorName,
+                lastEditedAt: timestamp
+            });
+            alert(`Siral Number ${siralNumber} has been updated successfully!`);
+
+        } else {
+            // CREATE new entry
+            await granulesRef.add({
+                siral: siralNumber,
+                bags: bags,
+                date: date,
+                color: color,
+                weight: weight,
+                price: price,
+                dispatch: false,
+                createdBy: editorName,
+                createdAt: timestamp,
+                lastEditedBy: editorName,
+                lastEditedAt: timestamp
+            });
+           // alert("New entry saved successfully!");
+        }
+
+        localStorage.setItem('lastGranuleColor', color);
+        window.location.reload();
+
+    } catch (error) {
+        // Catch and display any errors
+        console.error("DATABASE ERROR:", error);
+        alert("Could not save the entry. A database error occurred.\n\nError Message: " + error.message);
+    }
+}
     </script>
     <footer>zeel Industries</footer>
 </body>
